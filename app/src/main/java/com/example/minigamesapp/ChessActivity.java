@@ -7,6 +7,7 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,11 +36,13 @@ public class ChessActivity extends AppCompatActivity {
         int columns = 8;
         boolean colorIsBlack = true;
 
+        // setup squares
+
         for (int row = 1; row <= rows; row++) {
             Log.e("row", Integer.toString(row));
             for (int column = 1; column <= columns; column++) {
                 Log.e("column", Integer.toString(column));
-                View square = new View(this);
+                ImageView square = new ImageView(this);
                 if (colorIsBlack) {
                     square.setBackgroundColor(Color.rgb(78, 51, 21));
                 } else {
@@ -56,7 +59,7 @@ public class ChessActivity extends AppCompatActivity {
                 square.setLayoutParams(params);
                 String chessNotation = ColumnToLetter(column) + row;
                 square.setTag(chessNotation);
-                square.setId(View.generateViewId());
+                square.setId(ImageView.generateViewId());
                 square.setOnClickListener(v -> markSpecificChessSquare(chessNotation));
                 Log.e("Chess Notation:", chessNotation);
                 gridLayout.addView(square);
@@ -64,6 +67,8 @@ public class ChessActivity extends AppCompatActivity {
             }
             colorIsBlack = !colorIsBlack;
         }
+
+        
     }
 
     private static String ColumnToLetter(int columnNumber) {
