@@ -6,4 +6,16 @@
     </style>
 
     <style name="Theme.Minigamesapp" parent="Base.Theme.Minigamesapp" />
+
+    <style name="blackSquare">
+        <item name="android:background">#4E3315</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
+
+    <style name="whiteSquare">
+        <item name="android:background">#EAC090</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
 </resources>
