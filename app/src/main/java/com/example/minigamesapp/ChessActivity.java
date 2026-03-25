@@ -34,41 +34,56 @@ public class ChessActivity extends AppCompatActivity {
 
         int rows = 8;
         int columns = 8;
-        boolean colorIsBlack = true;
 
-        // setup squares
+        // 1️⃣ Create the board model (pieces)
+        String[][] board = new String[rows][columns];
 
-        for (int row = 1; row <= rows; row++) {
-            Log.e("row", Integer.toString(row));
-            for (int column = 1; column <= columns; column++) {
-                Log.e("column", Integer.toString(column));
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) board[row][column] = "";
+        }
+
+        board[0] = new String[]{"black_rook","black_knight","black_bishop","black_queen","black_king","black_bishop","black_knight","black_rook"};
+        for (int column = 0; column < columns; column++) board[1][column] = "black_pawn";
+
+        board[7] = new String[]{"white_rook","white_knight","white_bishop","white_queen","white_king","white_bishop","white_knight","white_rook"};
+        for (int column = 0; column < columns; column++) board[6][column] = "white_pawn";
+
+        boolean colorIsBlack = false;
+        int squareSize = (int)(50 * getResources().getDisplayMetrics().density); // turning 50dp into pixels cuz the layout params only accept pixels!!
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
                 ImageView square = new ImageView(this);
-                if (colorIsBlack) {
-                    square.setBackgroundColor(Color.rgb(78, 51, 21));
-                } else {
-                    square.setBackgroundColor(Color.rgb(234, 192, 144));
-                }
+
+                square.setBackgroundColor(colorIsBlack ? Color.rgb(78,51,21) : Color.rgb(234,192,144));
 
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-
-                int size = (int) (50 * getResources().getDisplayMetrics().density);
-
-                params.width = size;
-                params.height = size;
-
+                params.width = squareSize;
+                params.height = squareSize;
+                params.rowSpec = GridLayout.spec(row);
+                params.columnSpec = GridLayout.spec(col);
                 square.setLayoutParams(params);
-                String chessNotation = ColumnToLetter(column) + row;
-                square.setTag(chessNotation);
+
+                square.setTag(R.id.tag_coords, row + "," + col);
+                square.setTag(R.id.tag_piece, board[row][col]);
+
+                String piece = board[row][col];
+                if (!piece.isEmpty()) {
+                    int resId = getResources().getIdentifier(piece, "drawable", getPackageName());
+                    if (resId != 0) {
+                        square.setImageResource(resId); // dynamically set the image
+                    }
+                }
+
                 square.setId(ImageView.generateViewId());
-                square.setOnClickListener(v -> markSpecificChessSquare(chessNotation));
-                Log.e("Chess Notation:", chessNotation);
+                square.setOnClickListener(v -> selectPiece(square));
+
                 gridLayout.addView(square);
+
                 colorIsBlack = !colorIsBlack;
             }
             colorIsBlack = !colorIsBlack;
         }
-
-        
     }
 
     private static String ColumnToLetter(int columnNumber) {
@@ -104,6 +119,19 @@ public class ChessActivity extends AppCompatActivity {
         return columnLetter;
     }
 
+    private void selectPiece(ImageView selectedPiece) {
+        if (selectedPiece != null) {
+            selectedPiece.setBackgroundColor(Color.BLUE);
+            showLegalMoves((selectedPiece));
+        }
+    }
+
+    private void showLegalMoves(ImageView selectedPiece) {
+        String pieceType = selectedPiece.getTag(R.id.tag_piece).toString();
+//        if (pieceType == "")
+
+
+    }
     private void markSpecificChessSquare(String targetNotation){
 
         GridLayout gridLayout = findViewById(R.id.grid);
