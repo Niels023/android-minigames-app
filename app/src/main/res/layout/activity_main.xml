@@ -44,7 +44,7 @@
                         android:backgroundTint="#dddded"
                         android:fontFamily="@font/inter"
                         android:padding="2dp"
-                        android:text="Game Difficulty"
+                        android:text="Easy to hard"
                         android:textAlignment="center"
                         android:textSize="12dp" />
 
@@ -54,7 +54,7 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/inter"
                         android:padding="1dp"
-                        android:text="Game Title"
+                        android:text="Sudoku"
                         android:textAlignment="textStart"
                         android:textFontWeight="1000"
                         android:textSize="20dp" />
@@ -77,7 +77,7 @@
                             android:fontFamily="@font/inter"
                             android:padding="5dp"
                             android:paddingVertical="15dp"
-                            android:text="creator"
+                            android:text="Niels"
                             android:textAlignment="textStart"
                             android:textColor="#c3c3c3"
                             android:textFontWeight="600"
