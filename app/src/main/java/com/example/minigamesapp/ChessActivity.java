@@ -82,36 +82,43 @@ public class ChessActivity extends AppCompatActivity {
 
         ImageView blackknight1 = (ImageView) gridBoard.getChildAt(1);
         blackknight1.setImageResource(R.drawable.black_knight);
+
         ImageView blackknight2 = (ImageView) gridBoard.getChildAt(6);
         blackknight2.setImageResource(R.drawable.black_knight);
 
         ImageView blackbishop1 = (ImageView) gridBoard.getChildAt(2);
         blackbishop1.setImageResource(R.drawable.black_bishop);
+
         ImageView blackbishop2 = (ImageView) gridBoard.getChildAt(5);
         blackbishop2.setImageResource(R.drawable.black_bishop);
 
         ImageView whiterook1 = (ImageView) gridBoard.getChildAt(56);
         whiterook1.setImageResource(R.drawable.white_rook);
+
         ImageView whiterook2 = (ImageView) gridBoard.getChildAt(63);
         whiterook2.setImageResource(R.drawable.white_rook);
 
         ImageView whiteknight1 = (ImageView) gridBoard.getChildAt(57);
         whiteknight1.setImageResource(R.drawable.white_knight);
+
         ImageView whiteknight2 = (ImageView) gridBoard.getChildAt(62);
         whiteknight2.setImageResource(R.drawable.white_knight);
 
         ImageView whitebishop1 = (ImageView) gridBoard.getChildAt(58);
         whitebishop1.setImageResource(R.drawable.white_bishop);
+
         ImageView whitebishop2 = (ImageView) gridBoard.getChildAt(61);
         whitebishop2.setImageResource(R.drawable.white_bishop);
 
         ImageView whitequeen = (ImageView) gridBoard.getChildAt(59);
         whitequeen.setImageResource(R.drawable.white_queen);
+
         ImageView whiteking = (ImageView) gridBoard.getChildAt(60);
         whiteking.setImageResource(R.drawable.white_king);
 
         ImageView blackqueen = (ImageView) gridBoard.getChildAt(3);
         blackqueen.setImageResource(R.drawable.black_queen);
+
         ImageView blackking = (ImageView) gridBoard.getChildAt(4);
         blackking.setImageResource(R.drawable.black_king);
 
@@ -137,6 +144,20 @@ public class ChessActivity extends AppCompatActivity {
 //        imageView.setBackgroundColor(Color.RED);
 //        Pawn pawn = new Pawn(false, new Position(7, 5), imageView);
 //        chessBoard.addPiece(pawn);
+    }
+
+    private int getIndex(Position position) {
+        return position.row * 8 + position.column;
+    }
+
+    private Position getPositionFromIndex(int index) {
+        int moduloRow = 0;
+        while (index >= 8) {
+            index -= 8;
+            moduloRow++;
+        }
+        int moduloCol = index; // left-overs
+        return new Position(moduloRow, moduloCol);
     }
 
     private static String ColumnToLetter(int columnNumber) {
