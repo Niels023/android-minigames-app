@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="tag_coords" type="id"/>
+    <item name="tag_coords_row" type="id"/>
+    <item name="tag_coords_column" type="id"/>
     <item name="tag_piece" type="id"/>
 </resources>
