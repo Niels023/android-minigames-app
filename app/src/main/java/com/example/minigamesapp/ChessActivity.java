@@ -39,11 +39,11 @@ public class ChessActivity extends AppCompatActivity {
 
         boolean colorIsBlack = false;
         int squareSize = (int)(50 * getResources().getDisplayMetrics().density); // turning 50dp into pixels cuz the layout params only accept pixels!!
-        for (int row = 0; row < 8; row++) { // 0-7
-            for (int col = 0; col < 8; col++) { // 0-7
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
                 ImageView square = new ImageView(this);
 
-                square.setBackgroundColor(colorIsBlack ? Color.rgb(78,51,21) : Color.rgb(234,192,144));
+                square.setBackgroundColor(colorIsBlack ? Color.rgb(182, 137, 99) : Color.rgb(240, 218, 182));
 
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.width = squareSize;
@@ -61,6 +61,60 @@ public class ChessActivity extends AppCompatActivity {
             colorIsBlack = !colorIsBlack;
         }
 
+        // Extra Method
+//        for (int row = 0; row < 8; row++){
+//            for (int col = 0; col < 8; col++) {
+//                if (row == 0 && (col == 0 || col == 7)) {
+//                    ImageView square = (ImageView) gridBoard.getChildAt(row * 8 + col);
+//                    square.setImageResource(R.drawable.black_rook);
+//                } else if (row == 7 && (col == 0 || col == 7)) {
+//                    ImageView square = (ImageView) gridBoard.getChildAt(row * 8 + col);
+//                    square.setImageResource(R.drawable.white_rook);
+//                }
+//            }
+//        }
+
+        ImageView blackrook1 = (ImageView) gridBoard.getChildAt(0);
+        blackrook1.setImageResource(R.drawable.black_rook);
+
+        ImageView blackrook2 = (ImageView) gridBoard.getChildAt(7);
+        blackrook2.setImageResource(R.drawable.black_rook);
+
+        ImageView blackknight1 = (ImageView) gridBoard.getChildAt(1);
+        blackknight1.setImageResource(R.drawable.black_knight);
+        ImageView blackknight2 = (ImageView) gridBoard.getChildAt(6);
+        blackknight2.setImageResource(R.drawable.black_knight);
+
+        ImageView blackbishop1 = (ImageView) gridBoard.getChildAt(2);
+        blackbishop1.setImageResource(R.drawable.black_bishop);
+        ImageView blackbishop2 = (ImageView) gridBoard.getChildAt(5);
+        blackbishop2.setImageResource(R.drawable.black_bishop);
+
+        ImageView whiterook1 = (ImageView) gridBoard.getChildAt(56);
+        whiterook1.setImageResource(R.drawable.white_rook);
+        ImageView whiterook2 = (ImageView) gridBoard.getChildAt(63);
+        whiterook2.setImageResource(R.drawable.white_rook);
+
+        ImageView whiteknight1 = (ImageView) gridBoard.getChildAt(57);
+        whiteknight1.setImageResource(R.drawable.white_knight);
+        ImageView whiteknight2 = (ImageView) gridBoard.getChildAt(62);
+        whiteknight2.setImageResource(R.drawable.white_knight);
+
+        ImageView whitebishop1 = (ImageView) gridBoard.getChildAt(58);
+        whitebishop1.setImageResource(R.drawable.white_bishop);
+        ImageView whitebishop2 = (ImageView) gridBoard.getChildAt(61);
+        whitebishop2.setImageResource(R.drawable.white_bishop);
+
+        ImageView whitequeen = (ImageView) gridBoard.getChildAt(59);
+        whitequeen.setImageResource(R.drawable.white_queen);
+        ImageView whiteking = (ImageView) gridBoard.getChildAt(60);
+        whiteking.setImageResource(R.drawable.white_king);
+
+        ImageView blackqueen = (ImageView) gridBoard.getChildAt(3);
+        blackqueen.setImageResource(R.drawable.black_queen);
+        ImageView blackking = (ImageView) gridBoard.getChildAt(4);
+        blackking.setImageResource(R.drawable.black_king);
+
         for (int col = 0; col < 8; col++) {
             Log.e("e", Integer.toString(col));
             int index = (1 * 8) + col;
@@ -74,7 +128,6 @@ public class ChessActivity extends AppCompatActivity {
             ImageView square = (ImageView) gridBoard.getChildAt(index);
             square.setImageResource(R.drawable.white_pawn);
         }
-
 
 //        ImageView imageView = new ImageView(this);
 //        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
