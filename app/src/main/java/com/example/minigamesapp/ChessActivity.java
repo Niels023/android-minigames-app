@@ -146,7 +146,7 @@ public class ChessActivity extends AppCompatActivity {
 //        chessBoard.addPiece(pawn);
     }
 
-    private int getIndex(Position position) {
+    private int getIndexFromPosition(Position position) {
         return position.row * 8 + position.column;
     }
 
