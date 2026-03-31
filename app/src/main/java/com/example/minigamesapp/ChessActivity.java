@@ -1,6 +1,7 @@
 package com.example.minigamesapp;
 
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -8,16 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.FrameLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class ChessActivity extends AppCompatActivity {
-
-    public int squares = 64;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,30 +31,16 @@ public class ChessActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        ConstraintLayout main = findViewById(R.id.main);
 
-        GridLayout gridLayout = findViewById(R.id.grid);
-
-        int rows = 8;
-        int columns = 8;
-
-        // 1️⃣ Create the board model (pieces)
-        String[][] board = new String[rows][columns];
-
-        for (int row = 0; row < rows; row++) {
-            for (int column = 0; column < columns; column++) board[row][column] = "";
-        }
-
-        board[0] = new String[]{"black_rook","black_knight","black_bishop","black_queen","black_king","black_bishop","black_knight","black_rook"};
-        for (int column = 0; column < columns; column++) board[1][column] = "black_pawn";
-
-        board[7] = new String[]{"white_rook","white_knight","white_bishop","white_queen","white_king","white_bishop","white_knight","white_rook"};
-        for (int column = 0; column < columns; column++) board[6][column] = "white_pawn";
+        GridLayout gridBoard = findViewById(R.id.board);
+        Board chessBoard = new Board();
+        chessBoard.boardGrid = gridBoard;
 
         boolean colorIsBlack = false;
         int squareSize = (int)(50 * getResources().getDisplayMetrics().density); // turning 50dp into pixels cuz the layout params only accept pixels!!
-
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < columns; col++) {
+        for (int row = 0; row < 8; row++) { // 0-7
+            for (int col = 0; col < 8; col++) { // 0-7
                 ImageView square = new ImageView(this);
 
                 square.setBackgroundColor(colorIsBlack ? Color.rgb(78,51,21) : Color.rgb(234,192,144));
@@ -64,26 +52,38 @@ public class ChessActivity extends AppCompatActivity {
                 params.columnSpec = GridLayout.spec(col);
                 square.setLayoutParams(params);
 
-                square.setTag(R.id.tag_coords, row + "," + col);
-                square.setTag(R.id.tag_piece, board[row][col]);
-
-                String piece = board[row][col];
-                if (!piece.isEmpty()) {
-                    int resId = getResources().getIdentifier(piece, "drawable", getPackageName());
-                    if (resId != 0) {
-                        square.setImageResource(resId); // dynamically set the image
-                    }
-                }
-
                 square.setId(ImageView.generateViewId());
-                square.setOnClickListener(v -> selectPiece(square));
 
-                gridLayout.addView(square);
+                gridBoard.addView(square);
 
                 colorIsBlack = !colorIsBlack;
             }
             colorIsBlack = !colorIsBlack;
         }
+
+        for (int col = 0; col < 8; col++) {
+            Log.e("e", Integer.toString(col));
+            int index = (1 * 8) + col;
+            ImageView square = (ImageView) gridBoard.getChildAt(index);
+            square.setImageResource(R.drawable.black_pawn);
+        }
+
+        for (int col = 0; col < 8; col++) {
+            Log.e("e", Integer.toString(col));
+            int index = (6 * 8) + col;
+            ImageView square = (ImageView) gridBoard.getChildAt(index);
+            square.setImageResource(R.drawable.white_pawn);
+        }
+
+
+//        ImageView imageView = new ImageView(this);
+//        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+//        params.width = size;
+//        params.height = size;
+//        imageView.setLayoutParams(params);
+//        imageView.setBackgroundColor(Color.RED);
+//        Pawn pawn = new Pawn(false, new Position(7, 5), imageView);
+//        chessBoard.addPiece(pawn);
     }
 
     private static String ColumnToLetter(int columnNumber) {
@@ -119,34 +119,83 @@ public class ChessActivity extends AppCompatActivity {
         return columnLetter;
     }
 
-    private void selectPiece(ImageView selectedPiece) {
-        if (selectedPiece != null) {
-            selectedPiece.setBackgroundColor(Color.BLUE);
-            showLegalMoves((selectedPiece));
-        }
-    }
+    //    private void selectPiece(ImageView selectedPiece) {
+    //        if (currentSelectedPiece != selectedPiece) {
+    //            int pieceRow = Integer.parseInt(selectedPiece.getTag(R.id.tag_coords_row).toString());
+    //            int pieceColumn = Integer.parseInt(selectedPiece.getTag(R.id.tag_coords_column).toString());
+    //                currentSelectedPiece = selectedPiece;
+    //                selectedPiece.setBackgroundColor(Color.BLUE);
+    //                showLegalMoves((selectedPiece));
+    //        } else if (selectedPiece != null) {
+    //            int pieceRow = Integer.parseInt(selectedPiece.getTag(R.id.tag_coords_row).toString());
+    //            int pieceColumn = Integer.parseInt(selectedPiece.getTag(R.id.tag_coords_column).toString());
+    //            if (!board[pieceRow][pieceColumn].isEmpty()) {
+    //                currentSelectedPiece = selectedPiece;
+    //                selectedPiece.setBackgroundColor(Color.BLUE);
+    //                showLegalMoves((selectedPiece));
+    //            }
+    //        }
+    //    }
 
-    private void showLegalMoves(ImageView selectedPiece) {
-        String pieceType = selectedPiece.getTag(R.id.tag_piece).toString();
-//        if (pieceType == "")
+    //    private boolean isMoveLegal(ImageView selectedPiece, View selectedSquare){
+    //
+    //    };
 
+    //    private void showLegalMoves(ImageView selectedPiece) {
+    //        int pieceRow = Integer.parseInt(selectedPiece.getTag(R.id.tag_coords_row).toString());
+    //        int pieceColumn = Integer.parseInt(selectedPiece.getTag(R.id.tag_coords_column).toString());
+    //
+    //        String pieceType = selectedPiece.getTag(R.id.tag_piece).toString();
+    //        Log.e("Piece", pieceType + " Is at: " + pieceRow + "," + pieceColumn);
+    //        switch (pieceType){
+    //            case "white_pawn":
+    //                if (board[pieceRow - 1][pieceColumn].isEmpty()) {
+    //                    View space = getViewFromCoords(pieceRow - 1, pieceColumn);
+    //                    space.setBackgroundColor(Color.GREEN);
+    //                }
+    //                if (pieceRow == 6 && board[pieceRow - 2][pieceColumn].isEmpty()) {
+    //                    View space = getViewFromCoords(pieceRow - 2, pieceColumn);
+    //                    space.setBackgroundColor(Color.GREEN);
+    //                }
+    //                if (board[pieceRow - 1][pieceColumn - 1].contains("black_")) {
+    //                    View space = getViewFromCoords(pieceRow - 1, pieceColumn - 1);
+    //                    space.setBackgroundColor(Color.RED);
+    //                }
+    //                if (board[pieceRow - 1][pieceColumn + 1].contains("black_")) {
+    //                    View space = getViewFromCoords(pieceRow - 1, pieceColumn + 1);
+    //                    space.setBackgroundColor(Color.RED);
+    //                }
+    //        }
+    //
+    //    }
 
-    }
-    private void markSpecificChessSquare(String targetNotation){
-
-        GridLayout gridLayout = findViewById(R.id.grid);
-
-        View targetSquare = null;
-        for (int i = 0; i < gridLayout.getChildCount(); i++) {
-            View child = gridLayout.getChildAt(i);
-            if (targetNotation.equals(child.getTag())) {
-                targetSquare = child;
-                break;
-            }
-        }
-
-        if (targetSquare != null) {
-            targetSquare.setBackgroundColor(Color.RED);
-        }
-    }
+//    private View getViewFromCoords(int row, int column) {
+//        GridLayout gridLayout = findViewById(R.id.grid);
+//        for (int i = 0; i < gridLayout.getChildCount(); i++){
+//            View child = gridLayout.getChildAt(i);
+//            int childRow = Integer.parseInt(child.getTag(R.id.tag_coords_row).toString());
+//            int childColumn = Integer.parseInt(child.getTag(R.id.tag_coords_column).toString());
+//            if (childRow == row && childColumn == column) {
+//                return child;
+//            }
+//        }
+//        return null;
+//    }
+//    private void markSpecificChessSquare(String targetNotation){
+//
+//        GridLayout gridLayout = findViewById(R.id.grid);
+//
+//        View targetSquare = null;
+//        for (int i = 0; i < gridLayout.getChildCount(); i++) {
+//            View child = gridLayout.getChildAt(i);
+//            if (targetNotation.equals(child.getTag())) {
+//                targetSquare = child;
+//                break;
+//            }
+//        }
+//
+//        if (targetSquare != null) {
+//            targetSquare.setBackgroundColor(Color.RED);
+//        }
+//    }
 }
