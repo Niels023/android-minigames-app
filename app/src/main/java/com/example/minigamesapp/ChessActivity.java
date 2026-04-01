@@ -38,7 +38,7 @@ public class ChessActivity extends AppCompatActivity {
         chessBoard.boardGrid = gridBoard;
 
         boolean colorIsBlack = false;
-        int squareSize = (int)(50 * getResources().getDisplayMetrics().density); // turning 50dp into pixels cuz the layout params only accept pixels!!
+        int squareSize = (int)(46.875 * getResources().getDisplayMetrics().density); // turning 50dp into pixels cuz the layout params only accept pixels!!
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 ImageView square = new ImageView(this);

@@ -9,8 +9,8 @@
 
     <GridLayout
         android:id="@+id/board"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
+        android:layout_width="375dp"
+        android:layout_height="375dp"
         android:background="#99ff00"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
