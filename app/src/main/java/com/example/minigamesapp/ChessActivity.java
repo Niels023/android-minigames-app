@@ -124,14 +124,14 @@ public class ChessActivity extends AppCompatActivity {
 
         for (int col = 0; col < 8; col++) {
             Log.e("e", Integer.toString(col));
-            int index = (1 * 8) + col;
+            int index = getIndexFromPosition(new Position(1,col));
             ImageView square = (ImageView) gridBoard.getChildAt(index);
             square.setImageResource(R.drawable.black_pawn);
         }
 
         for (int col = 0; col < 8; col++) {
             Log.e("e", Integer.toString(col));
-            int index = (6 * 8) + col;
+            int index = getIndexFromPosition(new Position(6,col));
             ImageView square = (ImageView) gridBoard.getChildAt(index);
             square.setImageResource(R.drawable.white_pawn);
         }
