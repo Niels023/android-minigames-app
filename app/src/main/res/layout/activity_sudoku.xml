@@ -1,51 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#f0eded"
-    android:gravity="center_horizontal">
-
-    <Space android:layout_width="match_parent" android:layout_height="30dp"/>
-
-    <GridLayout
-        android:id="@+id/sudoku_grid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#000000"
-        android:padding="2dp"
-        android:columnCount="9"
-        android:rowCount="9" />
-
-    <Space android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
+    android:background="#f0eded">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:gravity="center">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-        <Button android:id="@+id/btn_1" android:layout_width="60dp" android:layout_height="60dp" android:text="1" android:textSize="20sp" android:layout_margin="4dp"/>
-        <Button android:id="@+id/btn_2" android:layout_width="60dp" android:layout_height="60dp" android:text="2" android:textSize="20sp" android:layout_margin="4dp"/>
-        <Button android:id="@+id/btn_3" android:layout_width="60dp" android:layout_height="60dp" android:text="3" android:textSize="20sp" android:layout_margin="4dp"/>
-        <Button android:id="@+id/btn_4" android:layout_width="60dp" android:layout_height="60dp" android:text="4" android:textSize="20sp" android:layout_margin="4dp"/>
-        <Button android:id="@+id/btn_5" android:layout_width="60dp" android:layout_height="60dp" android:text="5" android:textSize="20sp" android:layout_margin="4dp"/>
+        <Space android:layout_width="match_parent" android:layout_height="20dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp"
+            android:layout_marginBottom="15dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_lives"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="❤️❤️❤️"
+                android:textSize="32sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btn_game_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Menu"
+                android:backgroundTint="#888888"/>
+        </LinearLayout>
+
+        <GridLayout
+            android:id="@+id/sudoku_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#000000"
+            android:padding="2dp"
+            android:columnCount="9"
+            android:rowCount="9" />
+
+        <Space android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:gravity="center">
+            <Button android:id="@+id/btn_1" android:layout_width="60dp" android:layout_height="60dp" android:text="1" android:textSize="20sp" android:layout_margin="4dp"/>
+            <Button android:id="@+id/btn_2" android:layout_width="60dp" android:layout_height="60dp" android:text="2" android:textSize="20sp" android:layout_margin="4dp"/>
+            <Button android:id="@+id/btn_3" android:layout_width="60dp" android:layout_height="60dp" android:text="3" android:textSize="20sp" android:layout_margin="4dp"/>
+            <Button android:id="@+id/btn_4" android:layout_width="60dp" android:layout_height="60dp" android:text="4" android:textSize="20sp" android:layout_margin="4dp"/>
+            <Button android:id="@+id/btn_5" android:layout_width="60dp" android:layout_height="60dp" android:text="5" android:textSize="20sp" android:layout_margin="4dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_marginBottom="20dp">
+            <Button android:id="@+id/btn_6" android:layout_width="60dp" android:layout_height="60dp" android:text="6" android:textSize="20sp" android:layout_margin="4dp"/>
+            <Button android:id="@+id/btn_7" android:layout_width="60dp" android:layout_height="60dp" android:text="7" android:textSize="20sp" android:layout_margin="4dp"/>
+            <Button android:id="@+id/btn_8" android:layout_width="60dp" android:layout_height="60dp" android:text="8" android:textSize="20sp" android:layout_margin="4dp"/>
+            <Button android:id="@+id/btn_9" android:layout_width="60dp" android:layout_height="60dp" android:text="9" android:textSize="20sp" android:layout_margin="4dp"/>
+            <Button android:id="@+id/btn_erase" android:layout_width="60dp" android:layout_height="60dp" android:text="X" android:textColor="#FF0000" android:textSize="20sp" android:layout_margin="4dp"/>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/menu_overlay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginBottom="20dp">
+        android:background="#F0EDED"
+        android:elevation="10dp">
 
-        <Button android:id="@+id/btn_6" android:layout_width="60dp" android:layout_height="60dp" android:text="6" android:textSize="20sp" android:layout_margin="4dp"/>
-        <Button android:id="@+id/btn_7" android:layout_width="60dp" android:layout_height="60dp" android:text="7" android:textSize="20sp" android:layout_margin="4dp"/>
-        <Button android:id="@+id/btn_8" android:layout_width="60dp" android:layout_height="60dp" android:text="8" android:textSize="20sp" android:layout_margin="4dp"/>
-        <Button android:id="@+id/btn_9" android:layout_width="60dp" android:layout_height="60dp" android:text="9" android:textSize="20sp" android:layout_margin="4dp"/>
-        <Button android:id="@+id/btn_erase" android:layout_width="60dp" android:layout_height="60dp" android:text="X" android:textColor="#FF0000" android:textSize="20sp" android:layout_margin="4dp"/>
+        <TextView
+            android:id="@+id/tv_menu_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ready to Play?"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_marginBottom="40dp"/>
+
+        <Button
+            android:id="@+id/btn_menu_play"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="Play Game"
+            android:textSize="18sp"
+            android:backgroundTint="#268dd1"
+            android:layout_marginBottom="15dp"/>
+
+        <Button
+            android:id="@+id/btn_menu_view_board"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="View Board"
+            android:textSize="18sp"
+            android:backgroundTint="#4CAF50"
+            android:layout_marginBottom="15dp"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/btn_menu_back"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="Back to Menu"
+            android:textSize="18sp"
+            android:backgroundTint="#888888"/>
+
     </LinearLayout>
 
-</LinearLayout>
+</FrameLayout>
