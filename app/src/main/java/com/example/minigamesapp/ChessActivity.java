@@ -22,7 +22,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class ChessActivity extends AppCompatActivity {
-
+    public Piece currentSelectedPiece;
     public Board board;
 
     @Override
@@ -37,7 +37,6 @@ public class ChessActivity extends AppCompatActivity {
         });
 
         board = new Board(findViewById(R.id.board));
-
         board.setup(this);
 
         // Rooks
@@ -134,21 +133,14 @@ public class ChessActivity extends AppCompatActivity {
                 new Pawn(true,new Position(6,5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,5)))),
                 new Pawn(true,new Position(6,6), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,6)))),
                 new Pawn(true,new Position(6,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,7)))),
+                new Pawn(false,new Position(5,5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,5)))),
+
         };
 
         for (int i = 0; i < board.gridLayout.getChildCount(); i++){
             ImageView child = (ImageView) board.gridLayout.getChildAt(i);
             child.setOnClickListener(v -> selectPiece(child));
         }
-
-//        ImageView imageView = new ImageView(this);
-//        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-//        params.width = size;
-//        params.height = size;
-//        imageView.setLayoutParams(params);
-//        imageView.setBackgroundColor(Color.RED);
-//        Pawn pawn = new Pawn(false, new Position(7, 5), imageView);
-//        chessBoard.addPiece(pawn);
     }
     private void selectPiece(ImageView square) {
         for(int i = 0; i < board.gridLayout.getChildCount(); i++) {
@@ -162,7 +154,14 @@ public class ChessActivity extends AppCompatActivity {
                     for (int x = 0; x < listOfPositions.length; x++) {
                         Log.e("PositionInList", listOfPositions[x].row + "," + listOfPositions[x].column);
                         ImageView legalSquare = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(listOfPositions[x]));
-                        legalSquare.setBackgroundColor(Color.GREEN);
+
+                        Drawable legalDrawable = legalSquare.getDrawable();
+                        boolean legalHasImage = (legalDrawable != null);
+                        if (legalHasImage) {
+                            legalSquare.setBackgroundColor(Color.RED);
+                        } else {
+                            legalSquare.setBackgroundColor(Color.GREEN);
+                        }
                     }
                 }
             }
