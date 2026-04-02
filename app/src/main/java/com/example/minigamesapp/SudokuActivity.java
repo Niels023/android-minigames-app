@@ -29,6 +29,7 @@ public class SudokuActivity extends AppCompatActivity {
     private GridLayout sudokuGrid;
     private TextView selectedCell = null;
     private TextView livesText;
+    private Button btnMenuEasy, btnMenuMedium, btnMenuHard;
 
     // Game State
     private int lives = 3;
@@ -56,7 +57,9 @@ public class SudokuActivity extends AppCompatActivity {
         // Initialize menu UI
         menuOverlay = findViewById(R.id.menu_overlay);
         menuTitle = findViewById(R.id.tv_menu_title);
-        btnMenuPlay = findViewById(R.id.btn_menu_play);
+        btnMenuEasy = findViewById(R.id.btn_menu_easy);
+        btnMenuMedium = findViewById(R.id.btn_menu_medium);
+        btnMenuHard = findViewById(R.id.btn_menu_hard);
         btnMenuBack = findViewById(R.id.btn_menu_back);
         btnGameMenu = findViewById(R.id.btn_game_menu);
         btnMenuViewBoard = findViewById(R.id.btn_menu_view_board);
@@ -67,14 +70,22 @@ public class SudokuActivity extends AppCompatActivity {
 
     // Configures the overlay menu and in-game menu buttons
     private void setupMenu() {
-        btnMenuPlay.setOnClickListener(v -> {
+        View.OnClickListener difficultyListener = v -> {
+            Button clickedBtn = (Button) v;
+            String selectedDifficulty = clickedBtn.getText().toString();
+
             menuOverlay.setVisibility(View.GONE);
             lives = 3;
             isGameOver = false;
             livesText.setText("❤️❤️❤️");
             sudokuGrid.removeAllViews();
-            fetchSudokuPuzzle();
-        });
+
+            fetchSudokuPuzzle(selectedDifficulty);
+        };
+
+        btnMenuEasy.setOnClickListener(difficultyListener);
+        btnMenuMedium.setOnClickListener(difficultyListener);
+        btnMenuHard.setOnClickListener(difficultyListener);
 
         btnMenuBack.setOnClickListener(v -> finish());
 
@@ -84,24 +95,28 @@ public class SudokuActivity extends AppCompatActivity {
 
         btnGameMenu.setOnClickListener(v -> {
             menuOverlay.setVisibility(View.VISIBLE);
-
-            // Adjust menu styling if the game is merely paused
             if (!isGameOver) {
                 menuTitle.setText("Paused");
                 menuTitle.setTextColor(Color.BLACK);
-                btnMenuPlay.setText("Resume Game");
                 btnMenuViewBoard.setVisibility(View.GONE);
             }
         });
     }
 
-    // Fetches puzzle data from Dosuku API on a background thread
-    private void fetchSudokuPuzzle() {
+    // Fetches puzzle data from API Ninjas on a background thread
+    private void fetchSudokuPuzzle(String targetDifficulty) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             try {
-                URL url = new URL("https://sudoku-api.vercel.app/api/dosuku");
+                // Ensure the URL targets the correct generator endpoint
+                URL url = new URL("https://api.api-ninjas.com/v1/sudokugenerate?difficulty=" + targetDifficulty.toLowerCase());
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+                // SECURITY: The API key is removed to prevent leaking it on GitHub.
+                // TODO: Insert your personal api-ninjas.com API key here to run and test the app locally.
+                connection.setRequestProperty("X-Api-Key", "INSERT_YOUR_API_KEY_HERE");
+                connection.setRequestProperty("Accept", "application/json");
+
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 StringBuilder result = new StringBuilder();
                 String line;
@@ -110,16 +125,19 @@ public class SudokuActivity extends AppCompatActivity {
                 }
 
                 JSONObject jsonObject = new JSONObject(result.toString());
-                JSONArray grids = jsonObject.getJSONObject("newboard").getJSONArray("grids");
 
-                JSONArray puzzleValues = grids.getJSONObject(0).getJSONArray("value");
-                JSONArray solutionValues = grids.getJSONObject(0).getJSONArray("solution");
+                JSONArray puzzleValues = jsonObject.getJSONArray("puzzle");
+                JSONArray solutionValues = jsonObject.getJSONArray("solution");
 
-                // Switch back to main thread to update UI
                 runOnUiThread(() -> buildGrid(puzzleValues, solutionValues));
 
             } catch (Exception e) {
-                Log.e("SudokuAPI", "Error fetching puzzle.", e);
+                Log.e("SudokuAPI", "Error fetching API Ninjas puzzle.", e);
+
+                runOnUiThread(() -> {
+                    Toast.makeText(SudokuActivity.this, "Error fetching puzzle. Check your API Key or Internet connection.", Toast.LENGTH_LONG).show();
+                    menuOverlay.setVisibility(View.VISIBLE);
+                });
             }
         });
     }
@@ -140,11 +158,12 @@ public class SudokuActivity extends AppCompatActivity {
                 JSONArray solutionRowArray = solutionValues.getJSONArray(row);
 
                 for (int col = 0; col < 9; col++) {
-                    int cellValue = rowArray.getInt(col);
-                    solutionGrid[row][col] = solutionRowArray.getInt(col);
+                    // Use optInt(col, 0) to handle 'null' values from API Ninjas, defaulting empty cells to 0
+                    int cellValue = rowArray.optInt(col, 0);
+                    solutionGrid[row][col] = solutionRowArray.optInt(col, 0);
 
                     TextView cell = new TextView(this);
-                    cell.setTag(row + "," + col); // Store coordinates for validation
+                    cell.setTag(row + "," + col);
 
                     GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                     params.width = cellSize;
@@ -152,7 +171,6 @@ public class SudokuActivity extends AppCompatActivity {
                     params.rowSpec = GridLayout.spec(row);
                     params.columnSpec = GridLayout.spec(col);
 
-                    // Create thicker borders for the standard 3x3 Sudoku subgrids
                     int rightMargin = (col == 2 || col == 5) ? thickLine : thinLine;
                     int bottomMargin = (row == 2 || row == 5) ? thickLine : thinLine;
                     params.setMargins(thinLine, thinLine, rightMargin, bottomMargin);
@@ -162,6 +180,7 @@ public class SudokuActivity extends AppCompatActivity {
                     cell.setBackgroundColor(Color.WHITE);
                     cell.setTextSize(20f);
 
+                    // Since empty cells are now properly 0, the existing check works perfectly
                     if (cellValue != 0) {
                         cell.setText(String.valueOf(cellValue));
                         cell.setTextColor(Color.BLACK);
@@ -169,7 +188,6 @@ public class SudokuActivity extends AppCompatActivity {
                         cellsRemaining++;
                         cell.setTextColor(Color.BLUE);
 
-                        // Handle cell selection
                         cell.setOnClickListener(v -> {
                             if (isGameOver) return;
 
@@ -205,11 +223,10 @@ public class SudokuActivity extends AppCompatActivity {
                     int c = Integer.parseInt(coordinates[1]);
 
                     if (number == solutionGrid[r][c]) {
-                        // Correct input
                         selectedCell.setText(String.valueOf(number));
                         selectedCell.setTextColor(Color.BLUE);
                         selectedCell.setBackgroundColor(Color.WHITE);
-                        selectedCell.setOnClickListener(null); // Lock cell
+                        selectedCell.setOnClickListener(null);
                         selectedCell = null;
 
                         cellsRemaining--;
@@ -217,7 +234,6 @@ public class SudokuActivity extends AppCompatActivity {
                             triggerWin();
                         }
                     } else {
-                        // Incorrect input
                         lives--;
                         triggerVibration();
                         updateLivesUI();
@@ -238,7 +254,9 @@ public class SudokuActivity extends AppCompatActivity {
         isGameOver = true;
         menuTitle.setText("You Win!");
         menuTitle.setTextColor(Color.parseColor("#4CAF50"));
-        btnMenuPlay.setText("Play Again");
+
+        // Note: We change the menu title here, but do not show a specific "Play Again" button
+        // because the user must choose between the 3 difficulty buttons (Easy/Medium/Hard)!
         btnMenuViewBoard.setVisibility(View.VISIBLE);
         menuOverlay.setVisibility(View.VISIBLE);
     }
@@ -265,7 +283,6 @@ public class SudokuActivity extends AppCompatActivity {
 
             menuTitle.setText("Game Over!");
             menuTitle.setTextColor(Color.RED);
-            btnMenuPlay.setText("Try Again");
             btnMenuViewBoard.setVisibility(View.VISIBLE);
             menuOverlay.setVisibility(View.VISIBLE);
         }
