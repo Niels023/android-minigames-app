@@ -14,7 +14,6 @@ import java.util.List;
 public class Pawn extends Piece implements IPiece {
 
     public int pictureLocation = R.drawable.white_pawn;
-
     public Pawn (boolean isWhite, Position position, ImageView chessImage){
         this.chessImage = chessImage;
         this.isWhite = isWhite;
@@ -79,6 +78,28 @@ public class Pawn extends Piece implements IPiece {
                 }
             }
         } else {
+            // not same column
+            if (targetPos.row - pawnPos.row == firstRow) {
+                // Position is 1 in front
+                if (targetPos.column - 1 == pawnPos.column || targetPos.column + 1 == pawnPos.column){
+                    ImageView square = (ImageView) board.gridLayout.getChildAt(targetPos.row * 8 + targetPos.column);
+                    Drawable drawable = square.getDrawable();
+                    boolean hasImage = (drawable != null);
+
+                    if (!hasImage) {
+                        return false;
+                    }
+                    Piece piece = board.getPieceFromPosition(targetPos);
+
+                    Log.e("e", Boolean.toString(piece.isWhite));
+                    if (piece.isWhite != this.isWhite) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+
             // Check for diagonal takes
             // Check for en passant
         }
