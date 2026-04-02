@@ -1,5 +1,7 @@
 package com.example.minigamesapp;
 
+import android.content.Context;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 
 import org.intellij.lang.annotations.Identifier;
@@ -31,15 +33,15 @@ public class Pawn extends Piece implements IPiece {
         }
 
         Position pawnPos = this.position;
-        // Check for UP moves
+        // Check for front moves
         if(targetPos.column == pawnPos.column) {
             // same column
             if (targetPos.row - pawnPos.row == firstRow) {
-                // Position is 1 up
-
+                // Position is 1 in front
 
             } else if (targetPos.row - pawnPos.row == secondRow) {
-                // Position is 2 up
+                // Position is 2 in front
+                return true;
             }
         } else {
             // Check for diagonal takes
@@ -47,6 +49,12 @@ public class Pawn extends Piece implements IPiece {
         }
         return false;
     };
+
+    public Position[] getLegalMoves(GridLayout board, Piece piece) {
+        for (int i = 0; i < board.getChildCount(); i++) {
+            ImageView
+        }
+    }
     public void move(Position targetPosition){
 
     };
