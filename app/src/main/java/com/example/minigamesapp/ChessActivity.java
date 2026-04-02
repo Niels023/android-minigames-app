@@ -39,8 +39,6 @@ public class ChessActivity extends AppCompatActivity {
         board = new Board(findViewById(R.id.board));
 
         board.setup(this);
-        Pawn e = new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,0))));
-        e.getLegalMoves(board.gridLayout, e);
 
         // Rooks
         for (int row = 0; row < 8; row++){
@@ -119,14 +117,23 @@ public class ChessActivity extends AppCompatActivity {
 
         board.pieces = new Piece[]{
                 // Black Pawns
-                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,0)))),
-                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,1)))),
-                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,2)))),
-                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,3)))),
-                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,4)))),
-                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,5)))),
-                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,6)))),
-                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,7)))),
+                new Pawn(false,new Position(1,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,0)))),
+                new Pawn(false,new Position(1,1), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,1)))),
+                new Pawn(false,new Position(1,2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,2)))),
+                new Pawn(false,new Position(1,3), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,3)))),
+                new Pawn(false,new Position(1,4), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,4)))),
+                new Pawn(false,new Position(1,5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,5)))),
+                new Pawn(false,new Position(1,6), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,6)))),
+                new Pawn(false,new Position(1,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,7)))),
+                // White Pawns
+                new Pawn(true,new Position(6,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,0)))),
+                new Pawn(true,new Position(6,1), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,1)))),
+                new Pawn(true,new Position(6,2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,2)))),
+                new Pawn(true,new Position(6,3), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,3)))),
+                new Pawn(true,new Position(6,4), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,4)))),
+                new Pawn(true,new Position(6,5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,5)))),
+                new Pawn(true,new Position(6,6), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,6)))),
+                new Pawn(true,new Position(6,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,7)))),
         };
 
         for (int i = 0; i < board.gridLayout.getChildCount(); i++){
@@ -143,26 +150,20 @@ public class ChessActivity extends AppCompatActivity {
 //        Pawn pawn = new Pawn(false, new Position(7, 5), imageView);
 //        chessBoard.addPiece(pawn);
     }
-
-    public Piece getPieceFromPosition(Position pos) {
-        for (int i = 0; i < board.pieces.length; i++) {
-            if (board.pieces[i].position == pos) {
-                return board.pieces[i];
-            }
-        }
-        return null;
-    }
     private void selectPiece(ImageView square) {
-        for (int i = 0; i < board.gridLayout.getChildCount(); i++){
-            ImageView child = (ImageView) board.gridLayout.getChildAt(i);
-            if (child == square) {
+        for(int i = 0; i < board.gridLayout.getChildCount(); i++) {
+            if (board.gridLayout.getChildAt(i).getId() == square.getId()) {
                 Drawable drawable = square.getDrawable();
                 boolean hasImage = (drawable != null);
                 if (hasImage) {
-                    Log.e("LOG", "Index: " + i + " is NOT a empty space!");
                     square.setBackgroundColor(Color.BLUE);
-                } else {
-                    Log.e("LOG", "Index: " + i + " is a empty space!");
+                    Piece piece = board.getPieceFromPosition(getPositionFromIndex(i));
+                    Position[] listOfPositions = piece.getLegalMoves(board, piece);
+                    for (int x = 0; x < listOfPositions.length; x++) {
+                        Log.e("PositionInList", listOfPositions[x].row + "," + listOfPositions[x].column);
+                        ImageView legalSquare = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(listOfPositions[x]));
+                        legalSquare.setBackgroundColor(Color.GREEN);
+                    }
                 }
             }
         }
