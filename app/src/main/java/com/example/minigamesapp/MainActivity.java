@@ -1,6 +1,8 @@
 package com.example.minigamesapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,5 +22,11 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Button startbutton = findViewById(R.id.battle);
+        startbutton.setOnClickListener(v -> {
+            Intent start = new Intent(this, BattleshipsActivity.class);
+            startActivity(start);
+        });
+
     }
 }

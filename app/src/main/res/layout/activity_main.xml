@@ -277,7 +277,7 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/inter"
                         android:padding="1dp"
-                        android:text="Game Title"
+                        android:text="Battleships"
                         android:textAlignment="textStart"
                         android:textFontWeight="1000"
                         android:textSize="20dp" />
@@ -300,7 +300,7 @@
                             android:fontFamily="@font/inter"
                             android:padding="5dp"
                             android:paddingVertical="15dp"
-                            android:text="creator"
+                            android:text="Mike"
                             android:textAlignment="textStart"
                             android:textColor="#c3c3c3"
                             android:textFontWeight="600"
@@ -315,7 +315,10 @@
                         android:padding="1dp"
                         android:text="Start Game"
                         android:textSize="12.5dp"
-                        app:cornerRadius="10dp" />
+                        app:cornerRadius="10dp"
+                        android:id="@+id/battle"
+                        />
+
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
