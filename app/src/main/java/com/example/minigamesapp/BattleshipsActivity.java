@@ -4,8 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
