@@ -1,6 +1,8 @@
 package com.example.minigamesapp;
 
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +23,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class ChessActivity extends AppCompatActivity {
 
+    public Board board;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,109 +35,103 @@ public class ChessActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        ConstraintLayout main = findViewById(R.id.main);
 
-        GridLayout gridBoard = findViewById(R.id.board);
-        Board chessBoard = new Board();
-        chessBoard.boardGrid = gridBoard;
+        board = new Board(findViewById(R.id.board));
 
-        boolean colorIsBlack = false;
-        int squareSize = (int)(46.875 * getResources().getDisplayMetrics().density); // turning 50dp into pixels cuz the layout params only accept pixels!!
-        for (int row = 0; row < 8; row++) {
+        board.setup(this);
+        Pawn e = new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,0))));
+        e.getLegalMoves(board.gridLayout, e);
+
+        // Rooks
+        for (int row = 0; row < 8; row++){
             for (int col = 0; col < 8; col++) {
-                ImageView square = new ImageView(this);
-
-                square.setBackgroundColor(colorIsBlack ? Color.rgb(182, 137, 99) : Color.rgb(240, 218, 182));
-
-                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.width = squareSize;
-                params.height = squareSize;
-                params.rowSpec = GridLayout.spec(row);
-                params.columnSpec = GridLayout.spec(col);
-                square.setLayoutParams(params);
-
-                square.setId(ImageView.generateViewId());
-
-                gridBoard.addView(square);
-
-                colorIsBlack = !colorIsBlack;
+                if (row == 0 && (col == 0 || col == 7)) {
+                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
+                    square.setImageResource(R.drawable.black_rook);
+                } else if (row == 7 && (col == 0 || col == 7)) {
+                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
+                    square.setImageResource(R.drawable.white_rook);
+                }
             }
-            colorIsBlack = !colorIsBlack;
         }
-
-        // Extra Method
-//        for (int row = 0; row < 8; row++){
-//            for (int col = 0; col < 8; col++) {
-//                if (row == 0 && (col == 0 || col == 7)) {
-//                    ImageView square = (ImageView) gridBoard.getChildAt(row * 8 + col);
-//                    square.setImageResource(R.drawable.black_rook);
-//                } else if (row == 7 && (col == 0 || col == 7)) {
-//                    ImageView square = (ImageView) gridBoard.getChildAt(row * 8 + col);
-//                    square.setImageResource(R.drawable.white_rook);
-//                }
-//            }
-//        }
-
-        ImageView blackrook1 = (ImageView) gridBoard.getChildAt(0);
-        blackrook1.setImageResource(R.drawable.black_rook);
-
-        ImageView blackrook2 = (ImageView) gridBoard.getChildAt(7);
-        blackrook2.setImageResource(R.drawable.black_rook);
-
-        ImageView blackknight1 = (ImageView) gridBoard.getChildAt(1);
-        blackknight1.setImageResource(R.drawable.black_knight);
-
-        ImageView blackknight2 = (ImageView) gridBoard.getChildAt(6);
-        blackknight2.setImageResource(R.drawable.black_knight);
-
-        ImageView blackbishop1 = (ImageView) gridBoard.getChildAt(2);
-        blackbishop1.setImageResource(R.drawable.black_bishop);
-
-        ImageView blackbishop2 = (ImageView) gridBoard.getChildAt(5);
-        blackbishop2.setImageResource(R.drawable.black_bishop);
-
-        ImageView whiterook1 = (ImageView) gridBoard.getChildAt(56);
-        whiterook1.setImageResource(R.drawable.white_rook);
-
-        ImageView whiterook2 = (ImageView) gridBoard.getChildAt(63);
-        whiterook2.setImageResource(R.drawable.white_rook);
-
-        ImageView whiteknight1 = (ImageView) gridBoard.getChildAt(57);
-        whiteknight1.setImageResource(R.drawable.white_knight);
-
-        ImageView whiteknight2 = (ImageView) gridBoard.getChildAt(62);
-        whiteknight2.setImageResource(R.drawable.white_knight);
-
-        ImageView whitebishop1 = (ImageView) gridBoard.getChildAt(58);
-        whitebishop1.setImageResource(R.drawable.white_bishop);
-
-        ImageView whitebishop2 = (ImageView) gridBoard.getChildAt(61);
-        whitebishop2.setImageResource(R.drawable.white_bishop);
-
-        ImageView whitequeen = (ImageView) gridBoard.getChildAt(59);
-        whitequeen.setImageResource(R.drawable.white_queen);
-
-        ImageView whiteking = (ImageView) gridBoard.getChildAt(60);
-        whiteking.setImageResource(R.drawable.white_king);
-
-        ImageView blackqueen = (ImageView) gridBoard.getChildAt(3);
-        blackqueen.setImageResource(R.drawable.black_queen);
-
-        ImageView blackking = (ImageView) gridBoard.getChildAt(4);
-        blackking.setImageResource(R.drawable.black_king);
-
+        // Knights
+        for (int row = 0; row < 8; row++){
+            for (int col = 0; col < 8; col++) {
+                if (row == 0 && (col == 1 || col == 6)) {
+                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
+                    square.setImageResource(R.drawable.black_knight);
+                } else if (row == 7 && (col == 1 || col == 6)) {
+                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
+                    square.setImageResource(R.drawable.white_knight);
+                }
+            }
+        }
+        // Bishops
+        for (int row = 0; row < 8; row++){
+            for (int col = 0; col < 8; col++) {
+                if (row == 0 && (col == 2 || col == 5)) {
+                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
+                    square.setImageResource(R.drawable.black_bishop);
+                } else if (row == 7 && (col == 2 || col == 5)) {
+                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
+                    square.setImageResource(R.drawable.white_bishop);
+                }
+            }
+        }
+        // Queens
+        for (int row = 0; row < 8; row++){
+            for (int col = 0; col < 8; col++) {
+                if (row == 0 && col == 3) {
+                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
+                    square.setImageResource(R.drawable.black_queen);
+                } else if (row == 7 && col == 3) {
+                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
+                    square.setImageResource(R.drawable.white_queen);
+                }
+            }
+        }
+        // Kings
+        for (int row = 0; row < 8; row++){
+            for (int col = 0; col < 8; col++) {
+                if (row == 0 && col == 4) {
+                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
+                    square.setImageResource(R.drawable.black_king);
+                } else if (row == 7 && col == 4) {
+                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
+                    square.setImageResource(R.drawable.white_king);
+                }
+            }
+        }
+        // Black Pawns
         for (int col = 0; col < 8; col++) {
             Log.e("e", Integer.toString(col));
             int index = getIndexFromPosition(new Position(1,col));
-            ImageView square = (ImageView) gridBoard.getChildAt(index);
+            ImageView square = (ImageView) board.gridLayout.getChildAt(index);
             square.setImageResource(R.drawable.black_pawn);
         }
-
+        // White Pawns
         for (int col = 0; col < 8; col++) {
             Log.e("e", Integer.toString(col));
             int index = getIndexFromPosition(new Position(6,col));
-            ImageView square = (ImageView) gridBoard.getChildAt(index);
+            ImageView square = (ImageView) board.gridLayout.getChildAt(index);
             square.setImageResource(R.drawable.white_pawn);
+        }
+
+        board.pieces = new Piece[]{
+                // Black Pawns
+                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,0)))),
+                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,1)))),
+                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,2)))),
+                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,3)))),
+                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,4)))),
+                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,5)))),
+                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,6)))),
+                new Pawn(false,new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,7)))),
+        };
+
+        for (int i = 0; i < board.gridLayout.getChildCount(); i++){
+            ImageView child = (ImageView) board.gridLayout.getChildAt(i);
+            child.setOnClickListener(v -> selectPiece(child));
         }
 
 //        ImageView imageView = new ImageView(this);
@@ -146,10 +144,32 @@ public class ChessActivity extends AppCompatActivity {
 //        chessBoard.addPiece(pawn);
     }
 
+    public Piece getPieceFromPosition(Position pos) {
+        for (int i = 0; i < board.pieces.length; i++) {
+            if (board.pieces[i].position == pos) {
+                return board.pieces[i];
+            }
+        }
+        return null;
+    }
+    private void selectPiece(ImageView square) {
+        for (int i = 0; i < board.gridLayout.getChildCount(); i++){
+            ImageView child = (ImageView) board.gridLayout.getChildAt(i);
+            if (child == square) {
+                Drawable drawable = square.getDrawable();
+                boolean hasImage = (drawable != null);
+                if (hasImage) {
+                    Log.e("LOG", "Index: " + i + " is NOT a empty space!");
+                    square.setBackgroundColor(Color.BLUE);
+                } else {
+                    Log.e("LOG", "Index: " + i + " is a empty space!");
+                }
+            }
+        }
+    }
     private int getIndexFromPosition(Position position) {
         return position.row * 8 + position.column;
     }
-
     private Position getPositionFromIndex(int index) {
         int moduloRow = 0;
         while (index >= 8) {
@@ -159,8 +179,7 @@ public class ChessActivity extends AppCompatActivity {
         int moduloCol = index; // left-overs
         return new Position(moduloRow, moduloCol);
     }
-
-    private static String ColumnToLetter(int columnNumber) {
+    private String columnToLetter(int columnNumber) {
         String columnLetter = "A";
         switch (columnNumber) {
             case 1:
