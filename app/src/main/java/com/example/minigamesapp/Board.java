@@ -8,14 +8,11 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 
 public class Board{
-
     public GridLayout gridLayout;
     public Piece[] pieces;
-
     public Board(GridLayout grid) {
         gridLayout = grid;
     }
-
     public void addPiece(Piece chessPiece) {
         Position pos = chessPiece.position;
         GridLayout.LayoutParams params = new GridLayout.LayoutParams(
@@ -25,7 +22,6 @@ public class Board{
         gridLayout.addView(chessPiece.chessImage, params);
         Log.e("Placed", "Piece has been added to: " + pos.row + "," + pos.column);
     }
-
     public void setup(Context context) {
         boolean colorIsBlack = false;
         int squareSize = (int)(46.875 * context.getResources().getDisplayMetrics().density); // turning 50dp into pixels cuz the layout params only accept pixels!!
@@ -50,5 +46,15 @@ public class Board{
             }
             colorIsBlack = !colorIsBlack;
         }
+    }
+    public Piece getPieceFromPosition(Position pos) {
+        for (int i = 0; i < this.pieces.length; i++) {
+            Log.e("a", "going through a piece: " + i);
+            if (this.pieces[i].position.row == pos.row && this.pieces[i].position.column == pos.column ) {
+                Log.e("a", "positions are the same!");
+                return this.pieces[i];
+            }
+        }
+        return null;
     }
 }
