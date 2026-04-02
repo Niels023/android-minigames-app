@@ -203,7 +203,7 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/inter"
                         android:padding="1dp"
-                        android:text="Game Title"
+                        android:text="Dammen"
                         android:textAlignment="textStart"
                         android:textFontWeight="1000"
                         android:textSize="20dp" />
