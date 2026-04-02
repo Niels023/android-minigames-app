@@ -2,6 +2,8 @@ package com.example.minigamesapp;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -30,6 +32,10 @@ public class SudokuActivity extends AppCompatActivity {
     private TextView selectedCell = null;
     private TextView livesText;
     private Button btnMenuEasy, btnMenuMedium, btnMenuHard;
+
+    // Audio playback
+    private SoundPool soundPool;
+    private int soundPlaceId, soundWinId, soundLoseId, soundIncorrectId;
 
     // Game State
     private int lives = 3;
@@ -64,8 +70,27 @@ public class SudokuActivity extends AppCompatActivity {
         btnGameMenu = findViewById(R.id.btn_game_menu);
         btnMenuViewBoard = findViewById(R.id.btn_menu_view_board);
 
+        setupSoundPool();
         setupNumberPad();
         setupMenu();
+    }
+
+    // Pre-loads all sound files into memory for low-latency playback
+    private void setupSoundPool() {
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setMaxStreams(5)
+                .setAudioAttributes(audioAttributes)
+                .build();
+
+        soundPlaceId = soundPool.load(this, R.raw.sound_place, 1);
+        soundWinId = soundPool.load(this, R.raw.sound_win, 1);
+        soundLoseId = soundPool.load(this, R.raw.sound_lose, 1);
+        soundIncorrectId = soundPool.load(this, R.raw.sound_placeincorrect, 1);
     }
 
     // Configures the overlay menu and in-game menu buttons
@@ -108,12 +133,11 @@ public class SudokuActivity extends AppCompatActivity {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             try {
-                // Ensure the URL targets the correct generator endpoint
                 URL url = new URL("https://api.api-ninjas.com/v1/sudokugenerate?difficulty=" + targetDifficulty.toLowerCase());
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
                 // SECURITY: The API key is removed to prevent leaking it on GitHub.
-                // TODO: Insert your personal api-ninjas.com API key here to run and test the app locally.
+                // TODO: Insert personal api-ninjas.com API key here to run and test the app locally.
                 connection.setRequestProperty("X-Api-Key", "INSERT_YOUR_API_KEY_HERE");
                 connection.setRequestProperty("Accept", "application/json");
 
@@ -158,7 +182,6 @@ public class SudokuActivity extends AppCompatActivity {
                 JSONArray solutionRowArray = solutionValues.getJSONArray(row);
 
                 for (int col = 0; col < 9; col++) {
-                    // Use optInt(col, 0) to handle 'null' values from API Ninjas, defaulting empty cells to 0
                     int cellValue = rowArray.optInt(col, 0);
                     solutionGrid[row][col] = solutionRowArray.optInt(col, 0);
 
@@ -180,7 +203,6 @@ public class SudokuActivity extends AppCompatActivity {
                     cell.setBackgroundColor(Color.WHITE);
                     cell.setTextSize(20f);
 
-                    // Since empty cells are now properly 0, the existing check works perfectly
                     if (cellValue != 0) {
                         cell.setText(String.valueOf(cellValue));
                         cell.setTextColor(Color.BLACK);
@@ -229,12 +251,15 @@ public class SudokuActivity extends AppCompatActivity {
                         selectedCell.setOnClickListener(null);
                         selectedCell = null;
 
+                        playSound(soundPlaceId);
+
                         cellsRemaining--;
                         if (cellsRemaining == 0) {
                             triggerWin();
                         }
                     } else {
                         lives--;
+                        playSound(soundIncorrectId);
                         triggerVibration();
                         updateLivesUI();
                     }
@@ -246,17 +271,26 @@ public class SudokuActivity extends AppCompatActivity {
         btnErase.setOnClickListener(v -> {
             if (selectedCell != null && !isGameOver) {
                 selectedCell.setText("");
+                playSound(soundPlaceId);
             }
         });
     }
 
+    // Plays a pre-loaded sound effect
+    private void playSound(int soundId) {
+        if (soundPool != null) {
+            // play(soundId, leftVolume, rightVolume, priority, loop, playbackRate)
+            soundPool.play(soundId, 1.0f, 1.0f, 1, 0, 1.0f);
+        }
+    }
+
     private void triggerWin() {
+        playSound(soundWinId);
+
         isGameOver = true;
         menuTitle.setText("You Win!");
         menuTitle.setTextColor(Color.parseColor("#4CAF50"));
 
-        // Note: We change the menu title here, but do not show a specific "Play Again" button
-        // because the user must choose between the 3 difficulty buttons (Easy/Medium/Hard)!
         btnMenuViewBoard.setVisibility(View.VISIBLE);
         menuOverlay.setVisibility(View.VISIBLE);
     }
@@ -277,6 +311,8 @@ public class SudokuActivity extends AppCompatActivity {
             livesText.setText("🖤🖤🖤");
             isGameOver = true;
 
+            playSound(soundLoseId);
+
             if (selectedCell != null) {
                 selectedCell.setBackgroundColor(Color.WHITE);
             }
@@ -285,6 +321,16 @@ public class SudokuActivity extends AppCompatActivity {
             menuTitle.setTextColor(Color.RED);
             btnMenuViewBoard.setVisibility(View.VISIBLE);
             menuOverlay.setVisibility(View.VISIBLE);
+        }
+    }
+
+    // Cleans up memory when the activity is destroyed
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (soundPool != null) {
+            soundPool.release();
+            soundPool = null;
         }
     }
 }
