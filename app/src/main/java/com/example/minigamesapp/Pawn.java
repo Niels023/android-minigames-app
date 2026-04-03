@@ -27,12 +27,15 @@ public class Pawn extends Piece implements IPiece {
     public boolean isMoveLegal(Board board, Position targetPos){
         int firstRow;
         int secondRow;
+        int startRow;
         if (this.isWhite) {
             firstRow = -1;
             secondRow = -2;
+            startRow = 6;
         } else {
             firstRow = 1;
-            secondRow = -2;
+            secondRow = 2;
+            startRow = 1;
         }
         Position pawnPos = this.position;
         // Check for front moves
@@ -44,20 +47,24 @@ public class Pawn extends Piece implements IPiece {
                 Drawable drawable = square.getDrawable();
                 boolean hasImage = (drawable != null);
 
-                if (!hasImage) {
-                    return true;
-                }
-
-                Piece piece = board.getPieceFromPosition(targetPos);
-
-                Log.e("e", Boolean.toString(piece.isWhite));
-                if (piece.isWhite != this.isWhite) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return !hasImage;
             } else if (targetPos.row - pawnPos.row == secondRow) {
                 // Position is 2 in front
+
+                if (pawnPos.row != startRow) {
+                    return false;
+                }
+
+                int frontRow = targetPos.row - firstRow;
+
+                ImageView frontSquare = (ImageView) board.gridLayout.getChildAt(frontRow * 8 + targetPos.column);
+                Drawable frontDrawable = frontSquare.getDrawable();
+                boolean hasImageFront = (frontDrawable != null);
+
+                if (hasImageFront) {
+                    return false;
+                }
+
                 ImageView square = (ImageView) board.gridLayout.getChildAt(targetPos.row * 8 + targetPos.column);
                 Drawable drawable = square.getDrawable();
                 boolean hasImage = (drawable != null);
@@ -89,9 +96,11 @@ public class Pawn extends Piece implements IPiece {
                     if (!hasImage) {
                         return false;
                     }
+
                     Piece piece = board.getPieceFromPosition(targetPos);
 
                     Log.e("e", Boolean.toString(piece.isWhite));
+
                     if (piece.isWhite != this.isWhite) {
                         return true;
                     } else {

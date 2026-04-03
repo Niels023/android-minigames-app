@@ -124,6 +124,7 @@ public class ChessActivity extends AppCompatActivity {
                 new Pawn(false,new Position(1,5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,5)))),
                 new Pawn(false,new Position(1,6), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,6)))),
                 new Pawn(false,new Position(1,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,7)))),
+                new Pawn(false,new Position(2,5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(2,5)))),
                 // White Pawns
                 new Pawn(true,new Position(6,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,0)))),
                 new Pawn(true,new Position(6,1), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,1)))),
@@ -148,9 +149,11 @@ public class ChessActivity extends AppCompatActivity {
                 Drawable drawable = square.getDrawable();
                 boolean hasImage = (drawable != null);
                 if (hasImage) {
-                    square.setBackgroundColor(Color.BLUE);
                     Piece piece = board.getPieceFromPosition(getPositionFromIndex(i));
                     Position[] listOfPositions = piece.getLegalMoves(board, piece);
+                    if (listOfPositions.length != 0) {
+                        square.setBackgroundColor(Color.BLUE);
+                    }
                     for (int x = 0; x < listOfPositions.length; x++) {
                         Log.e("PositionInList", listOfPositions[x].row + "," + listOfPositions[x].column);
                         ImageView legalSquare = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(listOfPositions[x]));
@@ -211,84 +214,4 @@ public class ChessActivity extends AppCompatActivity {
         }
         return columnLetter;
     }
-
-    //    private void selectPiece(ImageView selectedPiece) {
-    //        if (currentSelectedPiece != selectedPiece) {
-    //            int pieceRow = Integer.parseInt(selectedPiece.getTag(R.id.tag_coords_row).toString());
-    //            int pieceColumn = Integer.parseInt(selectedPiece.getTag(R.id.tag_coords_column).toString());
-    //                currentSelectedPiece = selectedPiece;
-    //                selectedPiece.setBackgroundColor(Color.BLUE);
-    //                showLegalMoves((selectedPiece));
-    //        } else if (selectedPiece != null) {
-    //            int pieceRow = Integer.parseInt(selectedPiece.getTag(R.id.tag_coords_row).toString());
-    //            int pieceColumn = Integer.parseInt(selectedPiece.getTag(R.id.tag_coords_column).toString());
-    //            if (!board[pieceRow][pieceColumn].isEmpty()) {
-    //                currentSelectedPiece = selectedPiece;
-    //                selectedPiece.setBackgroundColor(Color.BLUE);
-    //                showLegalMoves((selectedPiece));
-    //            }
-    //        }
-    //    }
-
-    //    private boolean isMoveLegal(ImageView selectedPiece, View selectedSquare){
-    //
-    //    };
-
-    //    private void showLegalMoves(ImageView selectedPiece) {
-    //        int pieceRow = Integer.parseInt(selectedPiece.getTag(R.id.tag_coords_row).toString());
-    //        int pieceColumn = Integer.parseInt(selectedPiece.getTag(R.id.tag_coords_column).toString());
-    //
-    //        String pieceType = selectedPiece.getTag(R.id.tag_piece).toString();
-    //        Log.e("Piece", pieceType + " Is at: " + pieceRow + "," + pieceColumn);
-    //        switch (pieceType){
-    //            case "white_pawn":
-    //                if (board[pieceRow - 1][pieceColumn].isEmpty()) {
-    //                    View space = getViewFromCoords(pieceRow - 1, pieceColumn);
-    //                    space.setBackgroundColor(Color.GREEN);
-    //                }
-    //                if (pieceRow == 6 && board[pieceRow - 2][pieceColumn].isEmpty()) {
-    //                    View space = getViewFromCoords(pieceRow - 2, pieceColumn);
-    //                    space.setBackgroundColor(Color.GREEN);
-    //                }
-    //                if (board[pieceRow - 1][pieceColumn - 1].contains("black_")) {
-    //                    View space = getViewFromCoords(pieceRow - 1, pieceColumn - 1);
-    //                    space.setBackgroundColor(Color.RED);
-    //                }
-    //                if (board[pieceRow - 1][pieceColumn + 1].contains("black_")) {
-    //                    View space = getViewFromCoords(pieceRow - 1, pieceColumn + 1);
-    //                    space.setBackgroundColor(Color.RED);
-    //                }
-    //        }
-    //
-    //    }
-
-//    private View getViewFromCoords(int row, int column) {
-//        GridLayout gridLayout = findViewById(R.id.grid);
-//        for (int i = 0; i < gridLayout.getChildCount(); i++){
-//            View child = gridLayout.getChildAt(i);
-//            int childRow = Integer.parseInt(child.getTag(R.id.tag_coords_row).toString());
-//            int childColumn = Integer.parseInt(child.getTag(R.id.tag_coords_column).toString());
-//            if (childRow == row && childColumn == column) {
-//                return child;
-//            }
-//        }
-//        return null;
-//    }
-//    private void markSpecificChessSquare(String targetNotation){
-//
-//        GridLayout gridLayout = findViewById(R.id.grid);
-//
-//        View targetSquare = null;
-//        for (int i = 0; i < gridLayout.getChildCount(); i++) {
-//            View child = gridLayout.getChildAt(i);
-//            if (targetNotation.equals(child.getTag())) {
-//                targetSquare = child;
-//                break;
-//            }
-//        }
-//
-//        if (targetSquare != null) {
-//            targetSquare.setBackgroundColor(Color.RED);
-//        }
-//    }
 }
