@@ -39,7 +39,10 @@ public class ChessActivity extends AppCompatActivity {
         board = new Board(findViewById(R.id.board));
         board.setup(this);
 
+        Log.d("ChessGame", "--// Setting up the pieces.");
+
         // Rooks
+        Log.d("ChessGame", "--// Placing Rooks");
         for (int row = 0; row < 8; row++){
             for (int col = 0; col < 8; col++) {
                 if (row == 0 && (col == 0 || col == 7)) {
@@ -51,7 +54,10 @@ public class ChessActivity extends AppCompatActivity {
                 }
             }
         }
+        Log.d("ChessGame", "--// Placed Rooks");
+
         // Knights
+        Log.d("ChessGame", "--// Placing Knights");
         for (int row = 0; row < 8; row++){
             for (int col = 0; col < 8; col++) {
                 if (row == 0 && (col == 1 || col == 6)) {
@@ -63,7 +69,10 @@ public class ChessActivity extends AppCompatActivity {
                 }
             }
         }
+        Log.d("ChessGame", "--// Placed Knights");
+
         // Bishops
+        Log.d("ChessGame", "--// Placing Bishops");
         for (int row = 0; row < 8; row++){
             for (int col = 0; col < 8; col++) {
                 if (row == 0 && (col == 2 || col == 5)) {
@@ -75,7 +84,10 @@ public class ChessActivity extends AppCompatActivity {
                 }
             }
         }
+        Log.d("ChessGame", "--// Placed Bishops");
+
         // Queens
+        Log.d("ChessGame", "--// Placing Queens");
         for (int row = 0; row < 8; row++){
             for (int col = 0; col < 8; col++) {
                 if (row == 0 && col == 3) {
@@ -87,7 +99,10 @@ public class ChessActivity extends AppCompatActivity {
                 }
             }
         }
+        Log.d("ChessGame", "--// Placed Queens");
+
         // Kings
+        Log.d("ChessGame", "--// Placing Kings");
         for (int row = 0; row < 8; row++){
             for (int col = 0; col < 8; col++) {
                 if (row == 0 && col == 4) {
@@ -99,20 +114,25 @@ public class ChessActivity extends AppCompatActivity {
                 }
             }
         }
+        Log.d("ChessGame", "--// Placed Kings");
+
         // Black Pawns
+        Log.d("ChessGame", "--// Placing Black Pawns");
         for (int col = 0; col < 8; col++) {
-            Log.e("e", Integer.toString(col));
             int index = getIndexFromPosition(new Position(1,col));
             ImageView square = (ImageView) board.gridLayout.getChildAt(index);
             square.setImageResource(R.drawable.black_pawn);
         }
+        Log.d("ChessGame", "--// Placed Black Pawns");
+
         // White Pawns
+        Log.d("ChessGame", "--// Placing White Pawns");
         for (int col = 0; col < 8; col++) {
-            Log.e("e", Integer.toString(col));
             int index = getIndexFromPosition(new Position(6,col));
             ImageView square = (ImageView) board.gridLayout.getChildAt(index);
             square.setImageResource(R.drawable.white_pawn);
         }
+        Log.d("ChessGame", "--// Placed White Pawns");
 
         board.pieces = new Piece[]{
                 // Black Pawns
@@ -138,10 +158,12 @@ public class ChessActivity extends AppCompatActivity {
 
         };
 
+        Log.d("ChessGame", "--// Adding OnClickListeners");
         for (int i = 0; i < board.gridLayout.getChildCount(); i++){
             ImageView child = (ImageView) board.gridLayout.getChildAt(i);
             child.setOnClickListener(v -> selectPiece(child));
         }
+        Log.d("ChessGame", "--// OnClickListeners have been connected!");
     }
     private void selectPiece(ImageView square) {
         for(int i = 0; i < board.gridLayout.getChildCount(); i++) {
@@ -153,17 +175,17 @@ public class ChessActivity extends AppCompatActivity {
                     Position[] listOfPositions = piece.getLegalMoves(board, piece);
                     if (listOfPositions.length != 0) {
                         square.setBackgroundColor(Color.BLUE);
-                    }
-                    for (int x = 0; x < listOfPositions.length; x++) {
-                        Log.e("PositionInList", listOfPositions[x].row + "," + listOfPositions[x].column);
-                        ImageView legalSquare = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(listOfPositions[x]));
+                        for (int x = 0; x < listOfPositions.length; x++) {
+                            Log.e("PositionInList", listOfPositions[x].row + "," + listOfPositions[x].column);
+                            ImageView legalSquare = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(listOfPositions[x]));
 
-                        Drawable legalDrawable = legalSquare.getDrawable();
-                        boolean legalHasImage = (legalDrawable != null);
-                        if (legalHasImage) {
-                            legalSquare.setBackgroundColor(Color.RED);
-                        } else {
-                            legalSquare.setBackgroundColor(Color.GREEN);
+                            Drawable legalDrawable = legalSquare.getDrawable();
+                            boolean legalHasImage = (legalDrawable != null);
+                            if (legalHasImage) {
+                                legalSquare.setBackgroundColor(Color.RED);
+                            } else {
+                                legalSquare.setBackgroundColor(Color.GREEN);
+                            }
                         }
                     }
                 }

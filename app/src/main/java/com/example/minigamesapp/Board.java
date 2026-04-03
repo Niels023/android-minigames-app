@@ -20,9 +20,10 @@ public class Board{
                 GridLayout.spec(pos.column)
         );
         gridLayout.addView(chessPiece.chessImage, params);
-        Log.e("Placed", "Piece has been added to: " + pos.row + "," + pos.column);
+        Log.d("Placed", "Piece has been added to: " + pos.row + "," + pos.column);
     }
     public void setup(Context context) {
+        Log.d("ChessGame", "--// Setting up the board.");
         boolean colorIsBlack = false;
         int squareSize = (int)(46.875 * context.getResources().getDisplayMetrics().density); // turning 50dp into pixels cuz the layout params only accept pixels!!
         for (int row = 0; row < 8; row++) {
@@ -46,12 +47,11 @@ public class Board{
             }
             colorIsBlack = !colorIsBlack;
         }
+        Log.d("ChessGame", "--// Board has been setup!");
     }
     public Piece getPieceFromPosition(Position pos) {
         for (int i = 0; i < this.pieces.length; i++) {
-            Log.e("a", "going through a piece: " + i);
             if (this.pieces[i].position.row == pos.row && this.pieces[i].position.column == pos.column ) {
-                Log.e("a", "positions are the same!");
                 return this.pieces[i];
             }
         }

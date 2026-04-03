@@ -25,6 +25,6 @@ public class Piece implements IPiece{
     };
     public Position[] getLegalMoves(Board board, Piece piece) {
         Log.e("OH NO", "no work");
-        return null;
+        return new Position[]{};
     };
 }

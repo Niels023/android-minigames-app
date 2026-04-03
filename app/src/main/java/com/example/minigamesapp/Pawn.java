@@ -77,7 +77,7 @@ public class Pawn extends Piece implements IPiece {
                 if (piece == null) {
                     return true;
                 }
-                Log.e("e", Boolean.toString(piece.isWhite));
+
                 if (piece.isWhite != this.isWhite) {
                     return true;
                 } else {
@@ -98,8 +98,6 @@ public class Pawn extends Piece implements IPiece {
                     }
 
                     Piece piece = board.getPieceFromPosition(targetPos);
-
-                    Log.e("e", Boolean.toString(piece.isWhite));
 
                     if (piece.isWhite != this.isWhite) {
                         return true;
