@@ -1,6 +1,7 @@
 package com.example.minigamesapp;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
@@ -27,23 +28,23 @@ import java.util.concurrent.Executors;
 
 public class SudokuActivity extends AppCompatActivity {
 
-    // UI Elements
+    // User interface elements
     private GridLayout sudokuGrid;
     private TextView selectedCell = null;
     private TextView livesText;
     private Button btnMenuEasy, btnMenuMedium, btnMenuHard;
 
-    // Audio playback
+    // Audio playback variables
     private SoundPool soundPool;
     private int soundPlaceId, soundWinId, soundLoseId, soundIncorrectId;
 
-    // Game State
+    // Game state tracking
     private int lives = 3;
     private int[][] solutionGrid = new int[9][9];
     private boolean isGameOver = false;
     private int cellsRemaining = 0;
 
-    // Menu Overlay Elements
+    // Menu overlay elements
     private LinearLayout menuOverlay;
     private TextView menuTitle;
     private Button btnMenuPlay;
@@ -56,11 +57,9 @@ public class SudokuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sudoku);
 
-        // Initialize game UI
         sudokuGrid = findViewById(R.id.sudoku_grid);
         livesText = findViewById(R.id.tv_lives);
 
-        // Initialize menu UI
         menuOverlay = findViewById(R.id.menu_overlay);
         menuTitle = findViewById(R.id.tv_menu_title);
         btnMenuEasy = findViewById(R.id.btn_menu_easy);
@@ -136,9 +135,8 @@ public class SudokuActivity extends AppCompatActivity {
                 URL url = new URL("https://api.api-ninjas.com/v1/sudokugenerate?difficulty=" + targetDifficulty.toLowerCase());
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-                // SECURITY: The API key is removed to prevent leaking it on GitHub.
-                // TODO: Insert personal api-ninjas.com API key here to run and test the app locally.
-                connection.setRequestProperty("X-Api-Key", "INSERT_YOUR_API_KEY_HERE");
+                // Note: insert personal api-ninjas.com api key here to run and test the app locally
+                connection.setRequestProperty("X-Api-Key", "insert_your_api_key_here");
                 connection.setRequestProperty("Accept", "application/json");
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -159,14 +157,14 @@ public class SudokuActivity extends AppCompatActivity {
                 Log.e("SudokuAPI", "Error fetching API Ninjas puzzle.", e);
 
                 runOnUiThread(() -> {
-                    Toast.makeText(SudokuActivity.this, "Error fetching puzzle. Check your API Key or Internet connection.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SudokuActivity.this, "Error fetching puzzle. Check your connection or API key.", Toast.LENGTH_LONG).show();
                     menuOverlay.setVisibility(View.VISIBLE);
                 });
             }
         });
     }
 
-    // Dynamically generates the 9x9 grid and applies 3x3 styling
+    // Dynamically generates the grid and applies layout styling
     private void buildGrid(JSONArray puzzleValues, JSONArray solutionValues) {
         sudokuGrid.removeAllViews();
         cellsRemaining = 0;
@@ -217,7 +215,7 @@ public class SudokuActivity extends AppCompatActivity {
                                 selectedCell.setBackgroundColor(Color.WHITE);
                             }
                             selectedCell = (TextView) v;
-                            selectedCell.setBackgroundColor(Color.parseColor("#BBDEFB"));
+                            selectedCell.setBackgroundColor(Color.parseColor("#bbdefb"));
                         });
                     }
                     sudokuGrid.addView(cell);
@@ -279,17 +277,27 @@ public class SudokuActivity extends AppCompatActivity {
     // Plays a pre-loaded sound effect
     private void playSound(int soundId) {
         if (soundPool != null) {
-            // play(soundId, leftVolume, rightVolume, priority, loop, playbackRate)
             soundPool.play(soundId, 1.0f, 1.0f, 1, 0, 1.0f);
         }
+    }
+
+    // Saves a statistic to the local storage
+    private void saveStat(String statName) {
+        SharedPreferences sharedPref = getSharedPreferences("minigames_stats", Context.MODE_PRIVATE);
+        int currentScore = sharedPref.getInt(statName, 0);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(statName, currentScore + 1);
+        editor.apply();
     }
 
     private void triggerWin() {
         playSound(soundWinId);
 
+        saveStat("sudoku_wins");
+
         isGameOver = true;
         menuTitle.setText("You Win!");
-        menuTitle.setTextColor(Color.parseColor("#4CAF50"));
+        menuTitle.setTextColor(Color.parseColor("#4caf50"));
 
         btnMenuViewBoard.setVisibility(View.VISIBLE);
         menuOverlay.setVisibility(View.VISIBLE);
@@ -312,6 +320,8 @@ public class SudokuActivity extends AppCompatActivity {
             isGameOver = true;
 
             playSound(soundLoseId);
+
+            saveStat("sudoku_losses");
 
             if (selectedCell != null) {
                 selectedCell.setBackgroundColor(Color.WHITE);
