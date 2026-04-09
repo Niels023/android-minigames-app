@@ -5,6 +5,8 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 
 public class Piece implements IPiece{
+
+    public int pictureLocation = R.drawable.white_pawn;
     public boolean isWhite;
     public Position position;
     public ImageView chessImage;
@@ -21,9 +23,11 @@ public class Piece implements IPiece{
         Log.e("OH NO", "no work");
         return false;
     };
-    public void move(Position targetPosition){
+    public boolean move(Board board, int index){
+        Log.e("OH NO", "OH GOD");
+        return false;
     };
-    public Position[] getLegalMoves(Board board, Piece piece) {
+    public Position[] getLegalMoves(Board board) {
         Log.e("OH NO", "no work");
         return new Position[]{};
     };
