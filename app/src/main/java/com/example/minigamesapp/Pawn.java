@@ -1,6 +1,7 @@
 package com.example.minigamesapp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.GridLayout;
@@ -21,7 +22,6 @@ public class Pawn extends Piece implements IPiece {
         if (!isWhite) {
             pictureLocation = R.drawable.black_pawn;
         }
-
         chessImage.setImageResource(pictureLocation);
     }
     public boolean isMoveLegal(Board board, Position targetPos){
@@ -62,7 +62,10 @@ public class Pawn extends Piece implements IPiece {
                 boolean hasImageFront = (frontDrawable != null);
 
                 if (hasImageFront) {
+                    Log.e("e", "has image(piece)");
                     return false;
+                } else {
+                    Log.e("e", "DOESNT image(piece)");
                 }
 
                 ImageView square = (ImageView) board.gridLayout.getChildAt(targetPos.row * 8 + targetPos.column);
@@ -99,10 +102,14 @@ public class Pawn extends Piece implements IPiece {
 
                     Piece piece = board.getPieceFromPosition(targetPos);
 
-                    if (piece.isWhite != this.isWhite) {
-                        return true;
-                    } else {
+                    if (piece == null) {
                         return false;
+                    }
+
+                    if (piece.isWhite == this.isWhite) {
+                        return false;
+                    } else {
+                        return true;
                     }
                 }
             }
@@ -112,20 +119,36 @@ public class Pawn extends Piece implements IPiece {
         }
         return false;
     };
-    public Position[] getLegalMoves(Board board, Piece piece) {
+    public Position[] getLegalMoves(Board board) {
         List<Position> list = new ArrayList<>();
         for (int index = 0; index < board.gridLayout.getChildCount(); index++) {
             if (isMoveLegal(board, getPositionFromIndex(index))) {
                 list.add(getPositionFromIndex(index));
-                Log.e("IsLegal", getPositionFromIndex(index).row + "," + getPositionFromIndex(index).column + " is a legal move!");
-            } else {
-                Log.e("IsNOTLegal", getPositionFromIndex(index).row + "," + getPositionFromIndex(index).column + " is NOT a legal move!");
             }
         }
         return list.toArray(new Position[0]);
     }
-    public void move(Position targetPosition){
-
+    public boolean move(Board board,int index){
+        if (isMoveLegal(board, getPositionFromIndex(index))) {
+            Position pos = getPositionFromIndex(index);
+            ImageView otherView = (ImageView) board.gridLayout.getChildAt(index);
+            ImageView currentView = this.chessImage;
+            currentView.setImageResource(0);
+            otherView.setImageResource(this.pictureLocation);
+            if (board.getPieceFromPosition(pos) != null) {
+                Piece otherPiece = board.getPieceFromPosition(pos);
+                board.pieces.remove(otherPiece);
+            }
+            this.chessImage = otherView;
+            this.position = pos;
+            board.clean();
+            return true;
+        } else {
+            Position pos = getPositionFromIndex(index);
+            Log.e("Pawn", "Illegal Move, " + Integer.toString(this.position.row) + "," + Integer.toString(this.position.column) + " > " + Integer.toString(pos.row) + "," + Integer.toString(pos.column));
+            board.clean();
+            return false;
+        }
     };
 }
 

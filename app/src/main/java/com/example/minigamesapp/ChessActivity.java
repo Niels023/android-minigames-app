@@ -21,6 +21,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ChessActivity extends AppCompatActivity {
     public Piece currentSelectedPiece;
     public Board board;
@@ -134,7 +137,7 @@ public class ChessActivity extends AppCompatActivity {
         }
         Log.d("ChessGame", "--// Placed White Pawns");
 
-        board.pieces = new Piece[]{
+        board.pieces = new ArrayList<>(Arrays.asList(
                 // Black Pawns
                 new Pawn(false,new Position(1,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,0)))),
                 new Pawn(false,new Position(1,1), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,1)))),
@@ -144,7 +147,6 @@ public class ChessActivity extends AppCompatActivity {
                 new Pawn(false,new Position(1,5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,5)))),
                 new Pawn(false,new Position(1,6), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,6)))),
                 new Pawn(false,new Position(1,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,7)))),
-                new Pawn(false,new Position(2,5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(2,5)))),
                 // White Pawns
                 new Pawn(true,new Position(6,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,0)))),
                 new Pawn(true,new Position(6,1), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,1)))),
@@ -153,10 +155,8 @@ public class ChessActivity extends AppCompatActivity {
                 new Pawn(true,new Position(6,4), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,4)))),
                 new Pawn(true,new Position(6,5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,5)))),
                 new Pawn(true,new Position(6,6), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,6)))),
-                new Pawn(true,new Position(6,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,7)))),
-                new Pawn(false,new Position(5,5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,5)))),
-
-        };
+                new Pawn(true,new Position(6,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(6,7))))
+        ));
 
         Log.d("ChessGame", "--// Adding OnClickListeners");
         for (int i = 0; i < board.gridLayout.getChildCount(); i++){
@@ -166,28 +166,49 @@ public class ChessActivity extends AppCompatActivity {
         Log.d("ChessGame", "--// OnClickListeners have been connected!");
     }
     private void selectPiece(ImageView square) {
-        for(int i = 0; i < board.gridLayout.getChildCount(); i++) {
-            if (board.gridLayout.getChildAt(i).getId() == square.getId()) {
-                Drawable drawable = square.getDrawable();
-                boolean hasImage = (drawable != null);
-                if (hasImage) {
-                    Piece piece = board.getPieceFromPosition(getPositionFromIndex(i));
-                    Position[] listOfPositions = piece.getLegalMoves(board, piece);
-                    if (listOfPositions.length != 0) {
-                        square.setBackgroundColor(Color.BLUE);
-                        for (int x = 0; x < listOfPositions.length; x++) {
-                            Log.e("PositionInList", listOfPositions[x].row + "," + listOfPositions[x].column);
-                            ImageView legalSquare = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(listOfPositions[x]));
-
-                            Drawable legalDrawable = legalSquare.getDrawable();
-                            boolean legalHasImage = (legalDrawable != null);
-                            if (legalHasImage) {
-                                legalSquare.setBackgroundColor(Color.RED);
-                            } else {
-                                legalSquare.setBackgroundColor(Color.GREEN);
+        if (currentSelectedPiece == null) {
+            for(int i = 0; i < board.gridLayout.getChildCount(); i++) {
+                if (board.gridLayout.getChildAt(i).getId() == square.getId()) {
+                    Drawable drawable = square.getDrawable();
+                    boolean hasImage = (drawable != null);
+                    if (hasImage) {
+                        Log.d("Piece", "Selected Piece");
+                        Piece piece = board.getPieceFromPosition(getPositionFromIndex(i));
+                        if (currentSelectedPiece != null) {
+                            currentSelectedPiece.move(board, getIndexFromPosition(piece.position));
+                        } else {
+                            if (piece == null) {
+                                return;
+                            }
+                            Position[] listOfPositions = piece.getLegalMoves(board);
+                            if (listOfPositions.length != 0) {
+                                square.setBackgroundColor(Color.BLUE);
+                                currentSelectedPiece = piece;
+                                for (int x = 0; x < listOfPositions.length; x++) {
+                                    ImageView legalSquare = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(listOfPositions[x]));
+                                    Drawable legalDrawable = legalSquare.getDrawable();
+                                    boolean legalHasImage = (legalDrawable != null);
+                                    if (legalHasImage) {
+                                        legalSquare.setBackgroundColor(Color.RED);
+                                    } else {
+                                        legalSquare.setBackgroundColor(Color.GREEN);
+                                    }
+                                }
                             }
                         }
                     }
+                }
+            }
+        } else {
+            for(int i = 0; i < board.gridLayout.getChildCount(); i++) {
+                if (board.gridLayout.getChildAt(i).getId() == square.getId()) {
+                    Log.d("Square", "Selected Square");
+                    boolean status = currentSelectedPiece.move(board, i);
+                    if (status) {
+                        Log.d("Piece", "Moved Piece");
+                    }
+                    currentSelectedPiece = null;
+                    Log.d("Piece", "Unselected Piece");
                 }
             }
         }
