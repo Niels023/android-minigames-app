@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -138,6 +139,14 @@ public class ChessActivity extends AppCompatActivity {
         Log.d("ChessGame", "--// Placed White Pawns");
 
         board.pieces = new ArrayList<>(Arrays.asList(
+                // Black Rooks
+                new Rook(false, new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,0)))),
+                new Rook(false, new Position(0,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,7)))),
+
+                // White Rooks
+                new Rook(false, new Position(7,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,0)))),
+                new Rook(false, new Position(7,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,7)))),
+
                 // Black Pawns
                 new Pawn(false,new Position(1,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,0)))),
                 new Pawn(false,new Position(1,1), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,1)))),
