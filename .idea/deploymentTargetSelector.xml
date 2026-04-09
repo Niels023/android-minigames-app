@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-04-01T12:29:57.142759Z">
+        <DropdownSelection timestamp="2026-04-08T06:49:09.147008300Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=I7WCTCW8IBEMBQIF" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Zen\.android\avd\supermooietelefoon.avd" />
             </handle>
           </Target>
         </DropdownSelection>
