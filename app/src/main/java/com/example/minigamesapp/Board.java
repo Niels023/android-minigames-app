@@ -7,9 +7,11 @@ import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+
 public class Board{
     public GridLayout gridLayout;
-    public Piece[] pieces;
+    public ArrayList<Piece> pieces;
     public Board(GridLayout grid) {
         gridLayout = grid;
     }
@@ -31,6 +33,7 @@ public class Board{
                 ImageView square = new ImageView(context);
 
                 square.setBackgroundColor(colorIsBlack ? Color.rgb(182, 137, 99) : Color.rgb(240, 218, 182));
+                square.setTag(R.id.color, colorIsBlack);
 
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.width = squareSize;
@@ -49,10 +52,17 @@ public class Board{
         }
         Log.d("ChessGame", "--// Board has been setup!");
     }
+
+    public void clean() {
+        for (int i = 0; i < gridLayout.getChildCount(); i++) {
+            boolean colorIsBlack = Boolean.parseBoolean(gridLayout.getChildAt(i).getTag(R.id.color).toString());
+            gridLayout.getChildAt(i).setBackgroundColor(colorIsBlack ? Color.rgb(182, 137, 99) : Color.rgb(240, 218, 182));
+        }
+    }
     public Piece getPieceFromPosition(Position pos) {
-        for (int i = 0; i < this.pieces.length; i++) {
-            if (this.pieces[i].position.row == pos.row && this.pieces[i].position.column == pos.column ) {
-                return this.pieces[i];
+        for (Piece piece : this.pieces) {
+            if (piece.position.row == pos.row && piece.position.column == pos.column) {
+                return piece;
             }
         }
         return null;
