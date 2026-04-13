@@ -113,8 +113,6 @@ public class Pawn extends Piece implements IPiece {
                     }
                 }
             }
-
-            // Check for diagonal takes
             // Check for en passant
         }
         return false;
