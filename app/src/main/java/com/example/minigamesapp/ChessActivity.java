@@ -144,8 +144,11 @@ public class ChessActivity extends AppCompatActivity {
                 new Rook(false, new Position(0,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,7)))),
 
                 // White Rooks
-                new Rook(false, new Position(7,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,0)))),
-                new Rook(false, new Position(7,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,7)))),
+                new Rook(true, new Position(7,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,0)))),
+                new Rook(true, new Position(7,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,7)))),
+
+                new Pawn(true, new Position(5,2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,2)))),
+                new Rook(true, new Position(5,5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,5)))),
 
                 // Black Pawns
                 new Pawn(false,new Position(1,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,0)))),
@@ -176,35 +179,34 @@ public class ChessActivity extends AppCompatActivity {
     }
     private void selectPiece(ImageView square) {
         if (currentSelectedPiece == null) {
-            for(int i = 0; i < board.gridLayout.getChildCount(); i++) {
-                if (board.gridLayout.getChildAt(i).getId() == square.getId()) {
-                    Drawable drawable = square.getDrawable();
-                    boolean hasImage = (drawable != null);
-                    if (hasImage) {
-                        Log.d("Piece", "Selected Piece");
-                        Piece piece = board.getPieceFromPosition(getPositionFromIndex(i));
-                        if (currentSelectedPiece != null) {
-                            currentSelectedPiece.move(board, getIndexFromPosition(piece.position));
-                        } else {
-                            if (piece == null) {
-                                return;
-                            }
-                            Position[] listOfPositions = piece.getLegalMoves(board);
-                            if (listOfPositions.length != 0) {
-                                square.setBackgroundColor(Color.BLUE);
-                                currentSelectedPiece = piece;
-                                for (int x = 0; x < listOfPositions.length; x++) {
-                                    ImageView legalSquare = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(listOfPositions[x]));
-                                    Drawable legalDrawable = legalSquare.getDrawable();
-                                    boolean legalHasImage = (legalDrawable != null);
-                                    if (legalHasImage) {
-                                        legalSquare.setBackgroundColor(Color.RED);
-                                    } else {
-                                        legalSquare.setBackgroundColor(Color.GREEN);
-                                    }
-                                }
+            int i = board.gridLayout.indexOfChild(square);
+            Drawable drawable = square.getDrawable();
+            boolean hasImage = (drawable != null);
+            if (hasImage) {
+                Log.d("Piece", "Selected Piece");
+                Piece piece = board.getPieceFromPosition(getPositionFromIndex(i));
+                if (currentSelectedPiece != null) {
+                    currentSelectedPiece.move(board, getIndexFromPosition(piece.position));
+                } else {
+                    if (piece == null) {
+                        return;
+                    }
+                    Position[] listOfPositions = piece.getLegalMoves(board);
+                    if (listOfPositions.length != 0) {
+                        square.setBackgroundColor(Color.BLUE);
+                        currentSelectedPiece = piece;
+                        for (int x = 0; x < listOfPositions.length; x++) {
+                            ImageView legalSquare = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(listOfPositions[x]));
+                            Drawable legalDrawable = legalSquare.getDrawable();
+                            boolean legalHasImage = (legalDrawable != null);
+                            if (legalHasImage) {
+                                legalSquare.setBackgroundColor(Color.RED);
+                            } else {
+                                legalSquare.setBackgroundColor(Color.GREEN);
                             }
                         }
+                    } else {
+                        Log.e("no", "no positions returned");
                     }
                 }
             }
