@@ -139,6 +139,14 @@ public class ChessActivity extends AppCompatActivity {
         Log.d("ChessGame", "--// Placed White Pawns");
 
         board.pieces = new ArrayList<>(Arrays.asList(
+                // Black Bishops
+                new Bishop(false, new Position(0, 2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,2)))),
+                new Bishop(false, new Position(0, 5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,2)))),
+
+                // White Bishops
+                new Bishop(true, new Position(7, 2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,2)))),
+                new Bishop(true, new Position(7, 5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,2)))),
+
                 // Black Rooks
                 new Rook(false, new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,0)))),
                 new Rook(false, new Position(0,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,7)))),
@@ -147,8 +155,10 @@ public class ChessActivity extends AppCompatActivity {
                 new Rook(true, new Position(7,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,0)))),
                 new Rook(true, new Position(7,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,7)))),
 
+                // Extras
                 new Pawn(true, new Position(5,2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,2)))),
                 new Rook(true, new Position(5,5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,5)))),
+                new Bishop(true, new Position(5,6), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,6)))),
 
                 // Black Pawns
                 new Pawn(false,new Position(1,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(1,0)))),
@@ -210,7 +220,8 @@ public class ChessActivity extends AppCompatActivity {
                     }
                 }
             }
-        } else {
+        }
+        else {
             for(int i = 0; i < board.gridLayout.getChildCount(); i++) {
                 if (board.gridLayout.getChildAt(i).getId() == square.getId()) {
                     Log.d("Square", "Selected Square");
