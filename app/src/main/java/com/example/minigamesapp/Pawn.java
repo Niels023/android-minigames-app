@@ -25,19 +25,15 @@ public class Pawn extends Piece implements IPiece {
         chessImage.setImageResource(pictureLocation);
     }
     public boolean isMoveLegal(Board board, Position targetPos){
-        int firstRow;
-        int secondRow;
-        int startRow;
-        if (this.isWhite) {
-            firstRow = -1;
-            secondRow = -2;
-            startRow = 6;
-        } else {
-            firstRow = 1;
-            secondRow = 2;
-            startRow = 1;
-        }
+        int firstRow = isWhite ? -1 : 1;
+        int secondRow = isWhite ? -2 : 2;
+        int startRow = isWhite ? 6 : 1;
         Position pawnPos = this.position;
+
+        if (position.checkEquals(targetPos)) {
+            return false;
+        }
+
         // Check for front moves
         if(targetPos.column == pawnPos.column) {
             // same column
@@ -119,11 +115,36 @@ public class Pawn extends Piece implements IPiece {
     };
     public Position[] getLegalMoves(Board board) {
         List<Position> list = new ArrayList<>();
-        for (int index = 0; index < board.gridLayout.getChildCount(); index++) {
-            if (isMoveLegal(board, getPositionFromIndex(index))) {
-                list.add(getPositionFromIndex(index));
+
+        int row = position.row;
+
+        int firstRow = isWhite ? -1 : 1;
+        int secondRow = isWhite ? -2 : 2;
+
+        for (int r = 0; r < 8; r++) {
+            if (r - row == firstRow) {
+                for (int c = 0; c < 8; c++) {
+                    if (isMoveLegal(board, new Position(r,c))) {
+                        list.add(new Position(r,c));
+                    }
+                }
             }
         }
+
+        int startRow = isWhite ? 6 : 1;
+        if (row == startRow) {
+            for (int r = 0; r < 8; r++) {
+                if (r - row == secondRow) {
+                    for (int c = 0; c < 8; c++) {
+                        if (isMoveLegal(board, new Position(r,c))) {
+                            list.add(new Position(r,c));
+                        }
+                    }
+                }
+            }
+        }
+
+
         return list.toArray(new Position[0]);
     }
     public boolean move(Board board,int index){
@@ -148,6 +169,9 @@ public class Pawn extends Piece implements IPiece {
             return false;
         }
     };
+    private boolean addMoveToList(Board board, List<Position> moves, int r, int c) {
+        return false;
+    }
 }
 
 
