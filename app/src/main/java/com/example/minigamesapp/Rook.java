@@ -20,12 +20,12 @@ public class Rook extends Piece implements IPiece {
     }
 
     public boolean isMoveLegal(Board board, Position targetPos) {
-        int currentRow = this.position.row;
-        int currentColumn = this.position.column;
+        int currentRow = position.row;
+        int currentColumn = position.column;
         int targetRow = targetPos.row;
         int targetColumn = targetPos.column;
 
-        if (currentRow != targetRow && currentColumn != targetColumn) {
+        if (position.checkEquals(targetPos)) {
             return false;
         }
 
@@ -57,7 +57,7 @@ public class Rook extends Piece implements IPiece {
 
         Piece targetPiece = board.getPieceFromPosition(targetPos);
 
-        return this.isWhite != targetPiece.isWhite;
+        return isWhite != targetPiece.isWhite;
     }
 
     public Position[] getLegalMoves(Board board) {
@@ -94,7 +94,9 @@ public class Rook extends Piece implements IPiece {
     }
 
     public boolean move(Board board, int index) {
+        Log.e("test", "test");
         if (isMoveLegal(board, getPositionFromIndex(index))) {
+            Log.e("I", "LEGAL");
             Position pos = getPositionFromIndex(index);
             ImageView otherView = (ImageView) board.gridLayout.getChildAt(index);
             ImageView currentView = this.chessImage;
