@@ -96,7 +96,7 @@ public class Knight extends Piece implements IPiece {
             return true;
         } else {
             Position pos = getPositionFromIndex(index);
-            Log.e("Pawn", "Illegal Move, " + Integer.toString(this.position.row) + "," + Integer.toString(this.position.column) + " > " + Integer.toString(pos.row) + "," + Integer.toString(pos.column));
+            Log.e("Knight", "Illegal Move, " + Integer.toString(this.position.row) + "," + Integer.toString(this.position.column) + " > " + Integer.toString(pos.row) + "," + Integer.toString(pos.column));
             board.clean();
             return false;
         }
