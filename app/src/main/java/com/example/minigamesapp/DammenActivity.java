@@ -1,6 +1,7 @@
 package com.example.minigamesapp;
 
 import android.os.Bundle;
+import android.widget.GridLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,5 +21,7 @@ public class DammenActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Checkersboard board = new Checkersboard();
+        board.grid = findViewById(R.id.Checkersbord);
     }
 }
