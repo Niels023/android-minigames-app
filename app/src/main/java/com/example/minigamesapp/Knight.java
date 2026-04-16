@@ -36,13 +36,14 @@ public class Knight extends Piece implements IPiece {
         int highestColumn = Math.max(currentColumn, targetColumn);
         int lowestColumn = Math.min(currentColumn, targetColumn);
 
-        Log.e("MOVER", Integer.toString(currentRow) + "/" + Integer.toString(currentColumn));
-        Log.e("TARGET", Integer.toString(targetRow) + "/" + Integer.toString(targetColumn));
-        Log.e("ROW", Integer.toString(highestRow) + "-" + Integer.toString(lowestRow));
-        Log.e("COLUMN", Integer.toString(highestColumn) + "-" + Integer.toString(lowestColumn));
-
-        if (highestRow - lowestRow != 2 && highestColumn - lowestColumn != 1 && highestRow < 8 && highestColumn < 8) {
+        if (highestRow >= 8 || highestColumn >= 8 || lowestRow < 0 || lowestColumn < 0) {
             return false;
+        }
+
+        if (highestRow - lowestRow != 2 || highestColumn - lowestColumn != 1 ) {
+            if (highestRow - lowestRow != 1 || highestColumn - lowestColumn != 2 ) {
+                return false;
+            }
         }
 
         Piece targetPiece = board.getPieceFromPosition(targetPos);
@@ -54,22 +55,27 @@ public class Knight extends Piece implements IPiece {
         int row = position.row;
         int col = position.column;
 
-        // 2 rows up and 1 column left
-        if (isMoveLegal(board, new Position(row + 2, col + 1))) {
-            list.add(new Position(row + 2, col + 1));
+        int[][] directions = {
+                {2,1},
+                {2,-1},
+                {-2,1},
+                {-2,-1},
+                {1,2},
+                {1,-2},
+                {-1,2},
+                {-1,-2}
         };
 
-        if (isMoveLegal(board, new Position(row + 2, col - 1))) {
-            list.add(new Position(row + 2, col - 1));
-        };
+        for (int[] direction : directions) {
+            int newRow = row + direction[0];
+            int newCol = col + direction[1];
 
-        if (isMoveLegal(board, new Position(row - 2, col + 1))) {
-            list.add(new Position(row - 2, col + 1));
-        };
+            Position newPos = new Position(newRow, newCol);
 
-        if (isMoveLegal(board, new Position(row - 2, col - 1))) {
-            list.add(new Position(row - 2, col - 1));
-        };
+            if (isMoveLegal(board, newPos)) {
+                list.add(newPos);
+            }
+        }
 
         return list.toArray(new Position[0]);
     }
