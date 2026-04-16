@@ -203,16 +203,16 @@ public class ChessActivity extends AppCompatActivity {
                     }
                     Position[] listOfPositions = piece.getLegalMoves(board);
                     if (listOfPositions.length != 0) {
-                        square.setBackgroundColor(Color.BLUE);
+                        square.setBackgroundColor(Color.rgb(100, 149, 237));
                         currentSelectedPiece = piece;
                         for (int x = 0; x < listOfPositions.length; x++) {
                             ImageView legalSquare = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(listOfPositions[x]));
                             Drawable legalDrawable = legalSquare.getDrawable();
                             boolean legalHasImage = (legalDrawable != null);
                             if (legalHasImage) {
-                                legalSquare.setBackgroundColor(Color.RED);
+                                legalSquare.setBackgroundColor(Color.rgb(210, 43, 43));
                             } else {
-                                legalSquare.setBackgroundColor(Color.GREEN);
+                                legalSquare.setBackgroundColor(Color.rgb(175, 225, 175));
                             }
                         }
                     } else {
