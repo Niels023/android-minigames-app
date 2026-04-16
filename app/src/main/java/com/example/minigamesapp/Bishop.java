@@ -15,7 +15,7 @@ public class Bishop extends Piece implements IPiece {
         this.isWhite = isWhite;
         this.position = position;
         if (!isWhite) {
-            pictureLocation = R.drawable.black_rook;
+            pictureLocation = R.drawable.black_bishop;
         }
         chessImage.setImageResource(pictureLocation);
     }
