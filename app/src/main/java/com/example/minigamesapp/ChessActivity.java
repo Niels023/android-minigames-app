@@ -46,6 +46,12 @@ public class ChessActivity extends AppCompatActivity {
         Log.d("ChessGame", "--// Setting up the pieces.");
 
         board.pieces = new ArrayList<>(Arrays.asList(
+                // Black Queen
+                new Queen(false, new Position(0, 3), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,3)))),
+
+                // White Queen
+                new Queen(true, new Position(7, 3), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,3)))),
+
                 // Black Knights
                 new Knight(false, new Position(0, 1), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,1)))),
                 new Knight(false, new Position(0, 6), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,6)))),
@@ -69,6 +75,8 @@ public class ChessActivity extends AppCompatActivity {
                 // White Rooks
                 new Rook(true, new Position(7,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,0)))),
                 new Rook(true, new Position(7,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,7)))),
+
+                new Queen(false, new Position(5, 2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,2)))),
 
                 // Extras
 //                new Pawn(true, new Position(5,2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,2)))),
@@ -114,10 +122,15 @@ public class ChessActivity extends AppCompatActivity {
                     currentSelectedPiece.move(board, getIndexFromPosition(piece.position));
                 } else {
                     if (piece == null) {
+                        Log.e("no piece!", "no piece!");
                         return;
                     }
                     Position[] listOfPositions = piece.getLegalMoves(board);
+                    if (listOfPositions.length == 0) {
+                        Log.e("asdasdwasd", "is empty bro");
+                    }
                     if (listOfPositions.length != 0) {
+                        Log.e("asdsadsa", " not empty");
                         square.setBackgroundColor(Color.rgb(100, 149, 237));
                         currentSelectedPiece = piece;
                         for (int x = 0; x < listOfPositions.length; x++) {
