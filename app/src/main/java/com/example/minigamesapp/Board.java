@@ -15,15 +15,6 @@ public class Board{
     public Board(GridLayout grid) {
         gridLayout = grid;
     }
-    public void addPiece(Piece chessPiece) {
-        Position pos = chessPiece.position;
-        GridLayout.LayoutParams params = new GridLayout.LayoutParams(
-                GridLayout.spec(pos.row),
-                GridLayout.spec(pos.column)
-        );
-        gridLayout.addView(chessPiece.chessImage, params);
-        Log.d("Placed", "Piece has been added to: " + pos.row + "," + pos.column);
-    }
     public void setup(Context context) {
         Log.d("ChessGame", "--// Setting up the board.");
         boolean colorIsBlack = false;
