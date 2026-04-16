@@ -7,4 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".DammenActivity">
 
+
+    <GridLayout
+        android:id="@+id/checkersbord"
+        android:layout_width="375dp"
+        android:layout_height="375dp"
+        android:background="#880808"
+        android:rowCount="8"
+        android:columnCount="8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></GridLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+
