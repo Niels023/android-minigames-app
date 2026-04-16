@@ -20,11 +20,57 @@ public class Knight extends Piece implements IPiece {
         chessImage.setImageResource(pictureLocation);
     }
 
-    public boolean isMoveLegal(Board board, Position targetPos){
-        return false;
+    public boolean isMoveLegal(Board board, Position targetPos) {
+        int currentRow = position.row;
+        int currentColumn = position.column;
+        int targetRow = targetPos.row;
+        int targetColumn = targetPos.column;
+
+        if (position.checkEquals(targetPos)) {
+            return false;
+        }
+
+        int highestRow = Math.max(currentRow, targetRow);
+        int lowestRow = Math.min(currentRow, targetRow);
+
+        int highestColumn = Math.max(currentColumn, targetColumn);
+        int lowestColumn = Math.min(currentColumn, targetColumn);
+
+        Log.e("MOVER", Integer.toString(currentRow) + "/" + Integer.toString(currentColumn));
+        Log.e("TARGET", Integer.toString(targetRow) + "/" + Integer.toString(targetColumn));
+        Log.e("ROW", Integer.toString(highestRow) + "-" + Integer.toString(lowestRow));
+        Log.e("COLUMN", Integer.toString(highestColumn) + "-" + Integer.toString(lowestColumn));
+
+        if (highestRow - lowestRow != 2 && highestColumn - lowestColumn != 1 && highestRow < 8 && highestColumn < 8) {
+            return false;
+        }
+
+        Piece targetPiece = board.getPieceFromPosition(targetPos);
+
+        return targetPiece == null || targetPiece.isWhite != this.isWhite;
     };
     public Position[] getLegalMoves(Board board) {
         List<Position> list = new ArrayList<>();
+        int row = position.row;
+        int col = position.column;
+
+        // 2 rows up and 1 column left
+        if (isMoveLegal(board, new Position(row + 2, col + 1))) {
+            list.add(new Position(row + 2, col + 1));
+        };
+
+        if (isMoveLegal(board, new Position(row + 2, col - 1))) {
+            list.add(new Position(row + 2, col - 1));
+        };
+
+        if (isMoveLegal(board, new Position(row - 2, col + 1))) {
+            list.add(new Position(row - 2, col + 1));
+        };
+
+        if (isMoveLegal(board, new Position(row - 2, col - 1))) {
+            list.add(new Position(row - 2, col - 1));
+        };
+
         return list.toArray(new Position[0]);
     }
     public boolean move(Board board,int index){

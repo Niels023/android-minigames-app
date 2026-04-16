@@ -46,19 +46,19 @@ public class ChessActivity extends AppCompatActivity {
         Log.d("ChessGame", "--// Setting up the pieces.");
 
         // Rooks
-        Log.d("ChessGame", "--// Placing Rooks");
-        for (int row = 0; row < 8; row++){
-            for (int col = 0; col < 8; col++) {
-                if (row == 0 && (col == 0 || col == 7)) {
-                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
-                    square.setImageResource(R.drawable.black_rook);
-                } else if (row == 7 && (col == 0 || col == 7)) {
-                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
-                    square.setImageResource(R.drawable.white_rook);
-                }
-            }
-        }
-        Log.d("ChessGame", "--// Placed Rooks");
+//        Log.d("ChessGame", "--// Placing Rooks");
+//        for (int row = 0; row < 8; row++){
+//            for (int col = 0; col < 8; col++) {
+//                if (row == 0 && (col == 0 || col == 7)) {
+//                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
+//                    square.setImageResource(R.drawable.black_rook);
+//                } else if (row == 7 && (col == 0 || col == 7)) {
+//                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
+//                    square.setImageResource(R.drawable.white_rook);
+//                }
+//            }
+//        }
+//        Log.d("ChessGame", "--// Placed Rooks");
 
 //        // Knights
 //        Log.d("ChessGame", "--// Placing Knights");
@@ -76,19 +76,19 @@ public class ChessActivity extends AppCompatActivity {
 //        Log.d("ChessGame", "--// Placed Knights");
 
         // Bishops
-        Log.d("ChessGame", "--// Placing Bishops");
-        for (int row = 0; row < 8; row++){
-            for (int col = 0; col < 8; col++) {
-                if (row == 0 && (col == 2 || col == 5)) {
-                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
-                    square.setImageResource(R.drawable.black_bishop);
-                } else if (row == 7 && (col == 2 || col == 5)) {
-                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
-                    square.setImageResource(R.drawable.white_bishop);
-                }
-            }
-        }
-        Log.d("ChessGame", "--// Placed Bishops");
+//        Log.d("ChessGame", "--// Placing Bishops");
+//        for (int row = 0; row < 8; row++){
+//            for (int col = 0; col < 8; col++) {
+//                if (row == 0 && (col == 2 || col == 5)) {
+//                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
+//                    square.setImageResource(R.drawable.black_bishop);
+//                } else if (row == 7 && (col == 2 || col == 5)) {
+//                    ImageView square = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(row,col)));
+//                    square.setImageResource(R.drawable.white_bishop);
+//                }
+//            }
+//        }
+//        Log.d("ChessGame", "--// Placed Bishops");
 
 //        // Queens
 //        Log.d("ChessGame", "--// Placing Queens");
@@ -121,24 +121,32 @@ public class ChessActivity extends AppCompatActivity {
 //        Log.d("ChessGame", "--// Placed Kings");
 
         // Black Pawns
-        Log.d("ChessGame", "--// Placing Black Pawns");
-        for (int col = 0; col < 8; col++) {
-            int index = getIndexFromPosition(new Position(1,col));
-            ImageView square = (ImageView) board.gridLayout.getChildAt(index);
-            square.setImageResource(R.drawable.black_pawn);
-        }
-        Log.d("ChessGame", "--// Placed Black Pawns");
-
-        // White Pawns
-        Log.d("ChessGame", "--// Placing White Pawns");
-        for (int col = 0; col < 8; col++) {
-            int index = getIndexFromPosition(new Position(6,col));
-            ImageView square = (ImageView) board.gridLayout.getChildAt(index);
-            square.setImageResource(R.drawable.white_pawn);
-        }
-        Log.d("ChessGame", "--// Placed White Pawns");
+//        Log.d("ChessGame", "--// Placing Black Pawns");
+//        for (int col = 0; col < 8; col++) {
+//            int index = getIndexFromPosition(new Position(1,col));
+//            ImageView square = (ImageView) board.gridLayout.getChildAt(index);
+//            square.setImageResource(R.drawable.black_pawn);
+//        }
+//        Log.d("ChessGame", "--// Placed Black Pawns");
+//
+//        // White Pawns
+//        Log.d("ChessGame", "--// Placing White Pawns");
+//        for (int col = 0; col < 8; col++) {
+//            int index = getIndexFromPosition(new Position(6,col));
+//            ImageView square = (ImageView) board.gridLayout.getChildAt(index);
+//            square.setImageResource(R.drawable.white_pawn);
+//        }
+//        Log.d("ChessGame", "--// Placed White Pawns");
 
         board.pieces = new ArrayList<>(Arrays.asList(
+                // Black Knights
+                new Knight(false, new Position(0, 1), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,1)))),
+                new Knight(false, new Position(0, 6), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,6)))),
+
+                // White Knights
+                new Knight(true, new Position(7, 1), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,1)))),
+                new Knight(true, new Position(7, 6), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,6)))),
+
                 // Black Bishops
                 new Bishop(false, new Position(0, 2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,2)))),
                 new Bishop(false, new Position(0, 5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,5)))),
@@ -207,6 +215,9 @@ public class ChessActivity extends AppCompatActivity {
                         currentSelectedPiece = piece;
                         for (int x = 0; x < listOfPositions.length; x++) {
                             ImageView legalSquare = (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(listOfPositions[x]));
+                            if (legalSquare == null) {
+                                break;
+                            }
                             Drawable legalDrawable = legalSquare.getDrawable();
                             boolean legalHasImage = (legalDrawable != null);
                             if (legalHasImage) {
