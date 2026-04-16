@@ -169,9 +169,6 @@ public class Pawn extends Piece implements IPiece {
             return false;
         }
     };
-    private boolean addMoveToList(Board board, List<Position> moves, int r, int c) {
-        return false;
-    }
 }
 
 
