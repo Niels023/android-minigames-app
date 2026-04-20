@@ -82,7 +82,7 @@ public class ChessActivity extends AppCompatActivity {
                 new Rook(true, new Position(7,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,0)))),
                 new Rook(true, new Position(7,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,7)))),
 
-                new King(false, new Position(5, 2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,2)))),
+//                new King(false, new Position(5, 2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,2)))),
 
                 // Extras
 //                new Pawn(true, new Position(5,2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,2)))),
@@ -165,6 +165,7 @@ public class ChessActivity extends AppCompatActivity {
                     boolean status = currentSelectedPiece.move(board, i);
                     if (status) {
                         Log.d("Piece", "Moved Piece");
+                        // check for check and checkmate.
                     }
                     currentSelectedPiece = null;
                     Log.d("Piece", "Unselected Piece");

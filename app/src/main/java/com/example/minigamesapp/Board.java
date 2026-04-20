@@ -58,4 +58,17 @@ public class Board{
         }
         return null;
     }
+
+    public boolean isSquareUnderAttack(Position pos, boolean isWhite) {
+        for (Piece piece : pieces) {
+            if (piece.isWhite != isWhite) {
+                if(piece.isMoveLegal(this, pos)) {
+                    Log.e("SQUARE", "Square is under attack");
+                    return true;
+                }
+            }
+        }
+        Log.e("SQUARE", "Square wasn't under attack.");
+        return false;
+    }
 }

@@ -32,8 +32,13 @@ public class King extends Piece implements IPiece {
         if ((rowDiff <= 1 && colDiff <= 1) && (rowDiff + colDiff != 0)) {
             Piece targetPiece = board.getPieceFromPosition(targetPos);
 
-            // Allow move if empty or enemy piece
-            return targetPiece == null || targetPiece.isWhite != this.isWhite;
+            if (targetPiece == null || targetPiece.isWhite != this.isWhite) {
+
+                // 🚨 NEW: prevent moving into check
+                if (!board.isSquareUnderAttack(targetPos, this.isWhite)) {
+                    return true;
+                }
+            }
         }
 
         return false;
@@ -57,7 +62,7 @@ public class King extends Piece implements IPiece {
                 Position newPos = new Position(newRow, newCol);
                 Piece targetPiece = board.getPieceFromPosition(newPos);
 
-                if (targetPiece == null || targetPiece.isWhite != this.isWhite) {
+                if (isMoveLegal(board, newPos)) {
                     moves.add(newPos);
                     Log.e("PIECEE", newRow + "/" + newCol);
                 }

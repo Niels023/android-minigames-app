@@ -19,7 +19,7 @@ public class Piece implements IPiece{
         int moduloCol = index; // left-overs
         return new Position(moduloRow, moduloCol);
     }
-    public boolean isMoveLegal(Position targetPosition){
+    public boolean isMoveLegal(Board board, Position targetPosition){
         Log.e("OH NO", "no work");
         return false;
     };
