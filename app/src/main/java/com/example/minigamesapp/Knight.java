@@ -101,4 +101,8 @@ public class Knight extends Piece implements IPiece {
             return false;
         }
     };
+
+    public boolean isAttackMove(Board board, Position targetPos) {
+        return isMoveLegal(board, targetPos);
+    }
 }

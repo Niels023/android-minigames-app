@@ -5,4 +5,5 @@ public interface IPiece {
     boolean move(Board board, int index);
     Position[] getLegalMoves(Board board);
 
+    boolean isAttackMove(Board board, Position targetPos);
 }

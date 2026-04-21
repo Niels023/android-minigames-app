@@ -31,4 +31,8 @@ public class Piece implements IPiece{
         Log.e("OH NO", "no work");
         return new Position[]{};
     };
+
+    public boolean isAttackMove(Board board, Position targetPos) {
+        return isMoveLegal(board, targetPos);
+    }
 }

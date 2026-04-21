@@ -117,4 +117,8 @@ public class Bishop extends Piece implements IPiece {
             return false; // stop here (blocked)
         }
     }
+
+    public boolean isAttackMove(Board board, Position targetPos) {
+        return isMoveLegal(board, targetPos);
+    }
 }
