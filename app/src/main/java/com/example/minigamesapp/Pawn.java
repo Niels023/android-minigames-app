@@ -73,46 +73,32 @@ public class Pawn extends Piece implements IPiece {
                 }
 
                 Piece piece = board.getPieceFromPosition(targetPos);
-                if (piece == null) {
-                    return true;
-                }
-
-                if (piece.isWhite != this.isWhite) {
-                    return true;
-                } else {
+                if (piece != null) {
                     return false;
                 }
+
+                return true;
             }
         } else {
-            // not same column
-            if (targetPos.row - pawnPos.row == firstRow) {
-                // Position is 1 in front
-                if (targetPos.column - 1 == pawnPos.column || targetPos.column + 1 == pawnPos.column){
-                    ImageView square = (ImageView) board.gridLayout.getChildAt(targetPos.row * 8 + targetPos.column);
-                    Drawable drawable = square.getDrawable();
-                    boolean hasImage = (drawable != null);
-
-                    if (!hasImage) {
-                        return false;
-                    }
-
-                    Piece piece = board.getPieceFromPosition(targetPos);
-
-                    if (piece == null) {
-                        return false;
-                    }
-
-                    if (piece.isWhite == this.isWhite) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-            }
-            // Check for en passant
+            isAttackMove(board, targetPos);
         }
         return false;
-    };
+    }
+
+    public boolean isAttackMove(Board board, Position targetPos) {
+        Position pawnPos = this.position;
+        int firstRow = isWhite ? -1 : 1;
+        int secondRow = isWhite ? -2 : 2;
+        int startRow = isWhite ? 6 : 1;
+        if (targetPos.row - pawnPos.row == firstRow) {
+            // Position is 1 in front
+            if (targetPos.column - 1 == pawnPos.column || targetPos.column + 1 == pawnPos.column) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Position[] getLegalMoves(Board board) {
         List<Position> list = new ArrayList<>();
 
@@ -124,8 +110,8 @@ public class Pawn extends Piece implements IPiece {
         for (int r = 0; r < 8; r++) {
             if (r - row == firstRow) {
                 for (int c = 0; c < 8; c++) {
-                    if (isMoveLegal(board, new Position(r,c))) {
-                        list.add(new Position(r,c));
+                    if (isMoveLegal(board, new Position(r, c))) {
+                        list.add(new Position(r, c));
                     }
                 }
             }
@@ -136,8 +122,8 @@ public class Pawn extends Piece implements IPiece {
             for (int r = 0; r < 8; r++) {
                 if (r - row == secondRow) {
                     for (int c = 0; c < 8; c++) {
-                        if (isMoveLegal(board, new Position(r,c))) {
-                            list.add(new Position(r,c));
+                        if (isMoveLegal(board, new Position(r, c))) {
+                            list.add(new Position(r, c));
                         }
                     }
                 }
