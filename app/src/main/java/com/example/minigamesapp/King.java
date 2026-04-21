@@ -35,9 +35,7 @@ public class King extends Piece implements IPiece {
             if (targetPiece == null || targetPiece.isWhite != this.isWhite) {
 
                 // 🚨 NEW: prevent moving into check
-                if (!board.isSquareUnderAttack(targetPos, this.isWhite)) {
-                    return true;
-                }
+                return !board.isSquareUnderAttack(targetPos, this.isWhite);
             }
         }
 
@@ -63,8 +61,9 @@ public class King extends Piece implements IPiece {
                 Piece targetPiece = board.getPieceFromPosition(newPos);
 
                 if (isMoveLegal(board, newPos)) {
-                    moves.add(newPos);
-                    Log.e("PIECEE", newRow + "/" + newCol);
+                    if (!board.isSquareUnderAttack(newPos, this.isWhite)) {
+                        moves.add(newPos);
+                    }
                 }
             }
         }
@@ -94,4 +93,8 @@ public class King extends Piece implements IPiece {
             return false;
         }
     };
+
+    public boolean isAttackMove(Board board, Position targetPos) {
+        return isMoveLegal(board, targetPos);
+    }
 }
