@@ -283,7 +283,7 @@ public class SudokuActivity extends AppCompatActivity {
 
     // Saves a statistic to the local storage
     private void saveStat(String statName) {
-        SharedPreferences sharedPref = getSharedPreferences("minigames_stats", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("sudoku_stats", Context.MODE_PRIVATE);
         int currentScore = sharedPref.getInt(statName, 0);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt(statName, currentScore + 1);
