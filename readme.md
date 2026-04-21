@@ -53,3 +53,5 @@ Mogelijkheid om scores en resultaten te delen.
 
 ### Won't Have:
 Accountdatabase (Alle accounts worden lokaal op de computer opgeslagen).
+
+
