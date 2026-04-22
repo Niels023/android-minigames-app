@@ -60,16 +60,16 @@ public class Board{
     }
 
     public boolean isSquareUnderAttack(Position pos, boolean isWhite) {
+        Log.e("n", "newPos");
         for (Piece piece : pieces) {
-            Log.e("p", "p");
+            Log.e("p", "newPiece");
             if (piece.isWhite != isWhite) {
-                Log.e("Check", "Checking piece on: " + Integer.toString(piece.position.row) + "/" + Integer.toString(piece.position.column));
-                if(piece.isAttackMove(this, pos)) {
+                Log.e("Check", "Checking " + Integer.toString(piece.position.row) + "/" + Integer.toString(piece.position.column) + " on: " + Integer.toString(pos.row) + "/" + Integer.toString(pos.column));
+                if(piece.isAttackMove(this, pos, false)) {
                     Log.e("SQUARE", "Square is under attack");
                     return true;
                 } else {
                     Log.e("SQUARE", "Square is NOT under attack");
-                    continue;
                 }
             }
         }
