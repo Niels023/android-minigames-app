@@ -94,7 +94,30 @@ public class King extends Piece implements IPiece {
         }
     };
 
-    public boolean isAttackMove(Board board, Position targetPos) {
-        return isMoveLegal(board, targetPos);
+    public boolean isAttackMove(Board board, Position targetPos, Boolean turn) {
+        int currentRow = position.row;
+        int currentColumn = position.column;
+        int targetRow = targetPos.row;
+        int targetColumn = targetPos.column;
+
+        int rowDiff = Math.abs(currentRow - targetRow);
+        int colDiff = Math.abs(currentColumn - targetColumn);
+
+        // Must move exactly one square in any direction
+        if ((rowDiff <= 1 && colDiff <= 1) && (rowDiff + colDiff != 0)) {
+            Piece targetPiece = board.getPieceFromPosition(targetPos);
+
+            if (targetPiece == null || targetPiece.isWhite != this.isWhite) {
+
+                if (turn) {
+                    // 🚨 NEW: prevent moving into check
+                    return !board.isSquareUnderAttack(targetPos, this.isWhite);
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

@@ -80,12 +80,25 @@ public class Pawn extends Piece implements IPiece {
                 return true;
             }
         } else {
-            isAttackMove(board, targetPos);
+            isAttackMove(board, targetPos, false);
         }
-        return false;
+
+        if (!isAttackMove(board, targetPos, false)) {
+            return false;
+        }
+
+        ImageView square = (ImageView) board.gridLayout.getChildAt(targetPos.row * 8 + targetPos.column);
+        Drawable drawable = square.getDrawable();
+        boolean hasImage = (drawable != null);
+        if (hasImage) {
+            return (isWhite != board.getPieceFromPosition(targetPos).isWhite);
+        } else {
+            return false;
+        }
     }
 
-    public boolean isAttackMove(Board board, Position targetPos) {
+    public boolean isAttackMove(Board board, Position targetPos, Boolean turn) {
+        Log.e("eeee", "eeee");
         Position pawnPos = this.position;
         int firstRow = isWhite ? -1 : 1;
         int secondRow = isWhite ? -2 : 2;
@@ -93,9 +106,11 @@ public class Pawn extends Piece implements IPiece {
         if (targetPos.row - pawnPos.row == firstRow) {
             // Position is 1 in front
             if (targetPos.column - 1 == pawnPos.column || targetPos.column + 1 == pawnPos.column) {
+                Log.e("bbbbb", "bbbbb");
                 return true;
             }
         }
+        Log.e("aaaa", "aaaa");
         return false;
     }
 
@@ -129,7 +144,6 @@ public class Pawn extends Piece implements IPiece {
                 }
             }
         }
-
 
         return list.toArray(new Position[0]);
     }

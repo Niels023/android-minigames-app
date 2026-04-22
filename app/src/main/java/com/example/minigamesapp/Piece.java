@@ -32,7 +32,7 @@ public class Piece implements IPiece{
         return new Position[]{};
     };
 
-    public boolean isAttackMove(Board board, Position targetPos) {
+    public boolean isAttackMove(Board board, Position targetPos, Boolean turn) {
         return isMoveLegal(board, targetPos);
     }
 }

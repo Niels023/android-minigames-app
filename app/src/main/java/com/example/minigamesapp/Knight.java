@@ -102,7 +102,7 @@ public class Knight extends Piece implements IPiece {
         }
     };
 
-    public boolean isAttackMove(Board board, Position targetPos) {
+    public boolean isAttackMove(Board board, Position targetPos, Boolean turn) {
         return isMoveLegal(board, targetPos);
     }
 }
