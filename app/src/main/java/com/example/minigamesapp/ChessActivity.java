@@ -47,46 +47,43 @@ public class ChessActivity extends AppCompatActivity {
 
         board.pieces = new ArrayList<>(Arrays.asList(
 //                // Black King
-//                new King(false, new Position(0, 4), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,4)))),
+                new King(false, new Position(0, 4), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,4)))),
 //
 //                // White King
                 new King(true, new Position(7, 4), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,4)))),
 //
 //                // Black Queen
-//                new Queen(false, new Position(0, 3), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,3)))),
+                new Queen(false, new Position(0, 3), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,3)))),
 //
 //                // White Queen
-//                new Queen(true, new Position(7, 3), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,3)))),
+                new Queen(true, new Position(7, 3), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,3)))),
 //
 //                // Black Knights
-//                new Knight(false, new Position(0, 1), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,1)))),
-//                new Knight(false, new Position(0, 6), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,6)))),
+                new Knight(false, new Position(0, 1), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,1)))),
+                new Knight(false, new Position(0, 6), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,6)))),
 //
 //                // White Knights
-//                new Knight(true, new Position(7, 1), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,1)))),
-//                new Knight(true, new Position(7, 6), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,6)))),
+                new Knight(true, new Position(7, 1), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,1)))),
+                new Knight(true, new Position(7, 6), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,6)))),
 //
 //                // Black Bishops
-//                new Bishop(false, new Position(0, 2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,2)))),
-//                new Bishop(false, new Position(0, 5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,5)))),
+                new Bishop(false, new Position(0, 2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,2)))),
+                new Bishop(false, new Position(0, 5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,5)))),
 //
 //                // White Bishops
-//                new Bishop(true, new Position(7, 2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,2)))),
-//                new Bishop(true, new Position(7, 5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,5)))),
+                new Bishop(true, new Position(7, 2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,2)))),
+                new Bishop(true, new Position(7, 5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,5)))),
 //
 //                // Black Rooks
-//                new Rook(false, new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,0)))),
-//                new Rook(false, new Position(0,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,7)))),
+                new Rook(false, new Position(0,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,0)))),
+                new Rook(false, new Position(0,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(0,7)))),
 //
 //                // White Rooks
-//                new Rook(true, new Position(7,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,0)))),
-//                new Rook(true, new Position(7,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,7)))),
-
-//                new King(false, new Position(5, 2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,2)))),
-
-                // Extras
+                new Rook(true, new Position(7,0), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,0)))),
+                new Rook(true, new Position(7,7), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(7,7)))),
+//                 Extras
 //                new Pawn(true, new Position(5,2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,2)))),
-//                new Rook(true, new Position(5,5), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,5)))),
+//                new Rook(true, new Position(5,2), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,5)))),
 //                new Bishop(true, new Position(5,6), (ImageView) board.gridLayout.getChildAt(getIndexFromPosition(new Position(5,6)))),
 
                 // Black Pawns
