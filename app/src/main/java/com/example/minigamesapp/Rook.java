@@ -38,7 +38,7 @@ public class Rook extends Piece implements IPiece {
                 }
             }
         }
-        else {
+        else if (currentColumn == targetColumn){
             int step = (targetRow > currentRow) ? 1 : -1;  // switch 1 and -1 if target row number is higher
 
             for (int row = currentRow + step; row != targetRow; row += step) {
@@ -46,6 +46,9 @@ public class Rook extends Piece implements IPiece {
                     return false; // piece is in the way
                 }
             }
+        }
+        else {
+            return false;
         }
 
         ImageView square = (ImageView) board.gridLayout.getChildAt(targetRow * 8 + targetColumn);
