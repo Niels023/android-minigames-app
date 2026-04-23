@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class Board{
     public GridLayout gridLayout;
+    public Boolean isWhiteTurn = true;
     public ArrayList<Piece> pieces;
     public Board(GridLayout grid) {
         gridLayout = grid;
@@ -60,12 +61,9 @@ public class Board{
     }
 
     public boolean isSquareUnderAttack(Position pos, boolean isWhite) {
-        Log.e("n", "newPos");
         for (Piece piece : pieces) {
-            Log.e("p", "newPiece");
             if (piece.isWhite != isWhite) {
-                Log.e("Check", "Checking " + Integer.toString(piece.position.row) + "/" + Integer.toString(piece.position.column) + " on: " + Integer.toString(pos.row) + "/" + Integer.toString(pos.column));
-                if(piece.isAttackMove(this, pos, false)) {
+                if (piece.isAttackMove(this, pos, isWhite)) {
                     Log.e("SQUARE", "Square is under attack");
                     return true;
                 } else {
@@ -75,5 +73,26 @@ public class Board{
         }
         Log.e("SQUARE", "Square wasn't under attack.");
         return false;
+    }
+
+    public boolean isKingCheck(boolean isKingWhite) {
+        King king = getKing(isKingWhite);
+
+        boolean e = isSquareUnderAttack(king.position, king.isWhite);
+        Log.d("AAAA", Boolean.toString(e));
+
+
+        return e;
+    }
+
+    public King getKing(boolean isKingWhite) {
+        for (Piece piece : pieces) {
+            if (piece instanceof King) {
+                if (piece.isWhite == isKingWhite) {
+                    return (King) piece;
+                }
+            }
+        }
+        return null;
     }
 }

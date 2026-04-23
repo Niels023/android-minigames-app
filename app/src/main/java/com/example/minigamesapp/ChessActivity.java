@@ -112,6 +112,8 @@ public class ChessActivity extends AppCompatActivity {
             child.setOnClickListener(v -> selectPiece(child));
         }
         Log.d("ChessGame", "--// OnClickListeners have been connected!");
+
+
     }
     private void selectPiece(ImageView square) {
         if (currentSelectedPiece == null) {
@@ -121,19 +123,20 @@ public class ChessActivity extends AppCompatActivity {
             if (hasImage) {
                 Log.d("Piece", "Selected Piece");
                 Piece piece = board.getPieceFromPosition(getPositionFromIndex(i));
+//                if (board.isWhiteTurn != piece.isWhite) {
+//                    return;
+//                }
                 if (currentSelectedPiece != null) {
                     currentSelectedPiece.move(board, getIndexFromPosition(piece.position));
+                    Log.d("Piece", "Moved Piece");
+                    board.isWhiteTurn = !board.isWhiteTurn;
                 } else {
                     if (piece == null) {
                         Log.e("no piece!", "no piece!");
                         return;
                     }
                     Position[] listOfPositions = piece.getLegalMoves(board);
-                    if (listOfPositions.length == 0) {
-                        Log.e("asdasdwasd", "is empty bro");
-                    }
                     if (listOfPositions.length != 0) {
-                        Log.e("asdsadsa", "not empty");
                         square.setBackgroundColor(Color.rgb(100, 149, 237));
                         currentSelectedPiece = piece;
                         for (int x = 0; x < listOfPositions.length; x++) {
@@ -162,6 +165,7 @@ public class ChessActivity extends AppCompatActivity {
                     boolean status = currentSelectedPiece.move(board, i);
                     if (status) {
                         Log.d("Piece", "Moved Piece");
+                        board.isWhiteTurn = !board.isWhiteTurn;
                         // check for check and checkmate.
                     }
                     currentSelectedPiece = null;

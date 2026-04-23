@@ -58,10 +58,7 @@ public class Pawn extends Piece implements IPiece {
                 boolean hasImageFront = (frontDrawable != null);
 
                 if (hasImageFront) {
-                    Log.e("e", "has image(piece)");
                     return false;
-                } else {
-                    Log.e("e", "DOESNT image(piece)");
                 }
 
                 ImageView square = (ImageView) board.gridLayout.getChildAt(targetPos.row * 8 + targetPos.column);
@@ -98,7 +95,6 @@ public class Pawn extends Piece implements IPiece {
     }
 
     public boolean isAttackMove(Board board, Position targetPos, Boolean turn) {
-        Log.e("eeee", "eeee");
         Position pawnPos = this.position;
         int firstRow = isWhite ? -1 : 1;
         int secondRow = isWhite ? -2 : 2;
@@ -106,11 +102,9 @@ public class Pawn extends Piece implements IPiece {
         if (targetPos.row - pawnPos.row == firstRow) {
             // Position is 1 in front
             if (targetPos.column - 1 == pawnPos.column || targetPos.column + 1 == pawnPos.column) {
-                Log.e("bbbbb", "bbbbb");
                 return true;
             }
         }
-        Log.e("aaaa", "aaaa");
         return false;
     }
 

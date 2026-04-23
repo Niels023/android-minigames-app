@@ -35,7 +35,11 @@ public class Queen extends Piece implements IPiece {
             int step = (targetColumn > currentColumn) ? 1 : -1; // switch 1 and -1 if target column number is higher
             for (int col = currentColumn + step; col != targetColumn; col += step) {
                 if (board.getPieceFromPosition(new Position(currentRow, col)) != null) {
-                    return false; // piece is in the way
+//                    Piece blockedPiece = board.getPieceFromPosition(new Position(currentRow, col));
+//                    if (!(blockedPiece instanceof King)) {
+//                        return false;
+//                    }
+                    return false;
                 }
             }
         }
@@ -44,7 +48,7 @@ public class Queen extends Piece implements IPiece {
 
             for (int row = currentRow + step; row != targetRow; row += step) {
                 if (board.getPieceFromPosition(new Position(row, currentColumn)) != null) {
-                    return false; // piece is in the way
+                    return false;
                 }
             }
         }
@@ -61,7 +65,10 @@ public class Queen extends Piece implements IPiece {
 
             while (r != targetRow && c != targetColumn) {
                 if (board.getPieceFromPosition(new Position(r, c)) != null) {
-                    return false;
+                    Piece blockedPiece = board.getPieceFromPosition(new Position(r, c));
+                    if (!(blockedPiece instanceof King)) {
+                        return false;
+                    }
                 }
                 r += rowStep;
                 c += colStep;
@@ -160,6 +167,64 @@ public class Queen extends Piece implements IPiece {
     }
 
     public boolean isAttackMove(Board board, Position targetPos, Boolean turn) {
-        return isMoveLegal(board, targetPos);
+        int currentRow = position.row;
+        int currentColumn = position.column;
+        int targetRow = targetPos.row;
+        int targetColumn = targetPos.column;
+
+        if (position.checkEquals(targetPos)) {
+            return false;
+        }
+
+        if (currentRow == targetRow) {
+            // on same row
+            int step = (targetColumn > currentColumn) ? 1 : -1; // switch 1 and -1 if target column number is higher
+            for (int col = currentColumn + step; col != targetColumn; col += step) {
+                if (board.getPieceFromPosition(new Position(currentRow, col)) != null) {
+                    Piece blockedPiece = board.getPieceFromPosition(new Position(currentRow, col));
+                    if (!(blockedPiece instanceof King)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        else if(currentColumn == targetColumn) {
+            int step = (targetRow > currentRow) ? 1 : -1;  // switch 1 and -1 if target row number is higher
+
+            for (int row = currentRow + step; row != targetRow; row += step) {
+                if (board.getPieceFromPosition(new Position(row, currentColumn)) != null) {
+                    Piece blockedPiece = board.getPieceFromPosition(new Position(row, currentColumn));
+                    if (!(blockedPiece instanceof King)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        else {
+            if (Math.abs(currentRow - targetRow) != Math.abs(currentColumn - targetColumn)) {
+                return false;
+            }
+
+            int rowStep = (targetRow > currentRow) ? 1 : -1;
+            int colStep = (targetColumn > currentColumn) ? 1 : -1;
+
+            int r = currentRow + rowStep;
+            int c = currentColumn + colStep;
+
+            while (r != targetRow && c != targetColumn) {
+                if (board.getPieceFromPosition(new Position(r, c)) != null) {
+                    Piece blockedPiece = board.getPieceFromPosition(new Position(r, c));
+                    if (!(blockedPiece instanceof King)) {
+                        return false;
+                    }
+                }
+                r += rowStep;
+                c += colStep;
+            }
+        }
+
+        Piece targetPiece = board.getPieceFromPosition(targetPos);
+
+        return targetPiece == null || targetPiece.isWhite != this.isWhite;
     }
 }
