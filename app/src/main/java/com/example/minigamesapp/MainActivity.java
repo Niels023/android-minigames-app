@@ -22,10 +22,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 3. Create an Intent to navigate from this activity to the SudokuActivity
-                Intent intent = new Intent(MainActivity.this, DammenActivity.class);
+                Intent intent = new Intent(MainActivity.this, Checkerboard.class);
 
                 // 4. Start the new activity
-                startActivity(intent);
+                startActivity(new Intent(this, DammenActivity.class));
             }
         });
     }
