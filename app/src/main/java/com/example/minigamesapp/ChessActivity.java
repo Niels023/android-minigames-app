@@ -133,7 +133,7 @@ public class ChessActivity extends AppCompatActivity {
                     return;
                 }
                 if (currentSelectedPiece != null) {
-                    currentSelectedPiece.move(board, getIndexFromPosition(piece.position));
+                    currentSelectedPiece.move(this, board, getIndexFromPosition(piece.position));
                     Log.d("Piece", "Moved Piece");
                     vibratePhone();
                     board.isWhiteTurn = !board.isWhiteTurn;
@@ -169,7 +169,7 @@ public class ChessActivity extends AppCompatActivity {
             for(int i = 0; i < board.gridLayout.getChildCount(); i++) {
                 if (board.gridLayout.getChildAt(i).getId() == square.getId()) {
                     Log.d("Square", "Selected Square");
-                    boolean status = currentSelectedPiece.move(board, i);
+                    boolean status = currentSelectedPiece.move(this, board, i);
                     if (status) {
                         Log.d("Piece", "Moved Piece");
                         vibratePhone();
@@ -201,7 +201,6 @@ public class ChessActivity extends AppCompatActivity {
             VibratorManager vibratorManager = (VibratorManager) getSystemService(Context.VIBRATOR_MANAGER_SERVICE);
             Vibrator vibrator = vibratorManager.getDefaultVibrator();
             vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-
         } else {
             Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));

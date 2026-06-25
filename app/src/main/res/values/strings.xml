@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">minigamesapp</string>
+    <string name="white_wins">white wins</string>
+    <string name="black_wins">black wins</string>
 </resources>

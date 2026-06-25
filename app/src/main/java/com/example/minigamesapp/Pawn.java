@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.intellij.lang.annotations.Identifier;
 
@@ -141,7 +142,7 @@ public class Pawn extends Piece implements IPiece {
 
         return list.toArray(new Position[0]);
     }
-    public boolean move(Board board,int index){
+    public boolean move(Context context, Board board,int index){
         if (isMoveLegal(board, getPositionFromIndex(index))) {
             Position pos = getPositionFromIndex(index);
             ImageView otherView = (ImageView) board.gridLayout.getChildAt(index);
@@ -150,6 +151,13 @@ public class Pawn extends Piece implements IPiece {
             otherView.setImageResource(this.pictureLocation);
             if (board.getPieceFromPosition(pos) != null) {
                 Piece otherPiece = board.getPieceFromPosition(pos);
+                if (otherPiece instanceof King) {
+                    if (otherPiece.isWhite) {
+                        Toast.makeText(context, "black wins", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "white wins", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 board.pieces.remove(otherPiece);
             }
             this.chessImage = otherView;

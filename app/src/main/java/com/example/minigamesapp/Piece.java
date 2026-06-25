@@ -1,5 +1,6 @@
 package com.example.minigamesapp;
 
+import android.content.Context;
 import android.util.Log;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -23,7 +24,7 @@ public class Piece implements IPiece{
         Log.e("OH NO", "no work");
         return false;
     };
-    public boolean move(Board board, int index){
+    public boolean move(Context context, Board board, int index){
         Log.e("OH NO", "OH GOD");
         return false;
     };

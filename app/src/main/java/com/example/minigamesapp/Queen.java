@@ -1,8 +1,10 @@
 package com.example.minigamesapp;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,7 +130,7 @@ public class Queen extends Piece implements IPiece {
         return moves.toArray(new Position[0]);
     }
 
-    public boolean move(Board board, int index) {
+    public boolean move(Context context, Board board, int index) {
         if (isMoveLegal(board, getPositionFromIndex(index))) {
             Position pos = getPositionFromIndex(index);
             ImageView otherView = (ImageView) board.gridLayout.getChildAt(index);
@@ -137,6 +139,13 @@ public class Queen extends Piece implements IPiece {
             otherView.setImageResource(this.pictureLocation);
             if (board.getPieceFromPosition(pos) != null) {
                 Piece otherPiece = board.getPieceFromPosition(pos);
+                if (otherPiece instanceof King) {
+                    if (otherPiece.isWhite) {
+                        Toast.makeText(context, "black wins", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "white wins", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 board.pieces.remove(otherPiece);
             }
             this.chessImage = otherView;
