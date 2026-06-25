@@ -1,11 +1,16 @@
 package com.example.minigamesapp;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.os.VibratorManager;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
@@ -13,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -123,12 +129,13 @@ public class ChessActivity extends AppCompatActivity {
             if (hasImage) {
                 Log.d("Piece", "Selected Piece");
                 Piece piece = board.getPieceFromPosition(getPositionFromIndex(i));
-//                if (board.isWhiteTurn != piece.isWhite) {
-//                    return;
-//                }
+                if (board.isWhiteTurn != piece.isWhite) {
+                    return;
+                }
                 if (currentSelectedPiece != null) {
                     currentSelectedPiece.move(board, getIndexFromPosition(piece.position));
                     Log.d("Piece", "Moved Piece");
+                    vibratePhone();
                     board.isWhiteTurn = !board.isWhiteTurn;
                 } else {
                     if (piece == null) {
@@ -165,6 +172,7 @@ public class ChessActivity extends AppCompatActivity {
                     boolean status = currentSelectedPiece.move(board, i);
                     if (status) {
                         Log.d("Piece", "Moved Piece");
+                        vibratePhone();
                         board.isWhiteTurn = !board.isWhiteTurn;
                         // check for check and checkmate.
                     }
@@ -186,6 +194,21 @@ public class ChessActivity extends AppCompatActivity {
         int moduloCol = index; // left-overs
         return new Position(moduloRow, moduloCol);
     }
+
+    private void vibratePhone() {
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            VibratorManager vibratorManager = (VibratorManager) getSystemService(Context.VIBRATOR_MANAGER_SERVICE);
+            Vibrator vibrator = vibratorManager.getDefaultVibrator();
+            vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+
+        } else {
+            Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+
+        }
+    }
+
     private String columnToLetter(int columnNumber) {
         String columnLetter = "A";
         switch (columnNumber) {
